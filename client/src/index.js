@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./App";
+import Root from "./components/Root";
 import * as serviceWorker from "./serviceWorker";
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
@@ -13,7 +13,7 @@ const engine = new Styletron();
 
 ReactDOM.render(
   <StyletronProvider value={engine} debug={debug} debugAfterHydration>
-    <App />
+    <Root />
   </StyletronProvider>,
   document.getElementById("root")
 );
