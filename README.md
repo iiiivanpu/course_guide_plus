@@ -1,0 +1,1 @@
+This project is based on LSA Course Guide, but it provides much more features. 
