@@ -2,15 +2,20 @@
 from pyquery import PyQuery as pq
 import re
 import time
+import json
 import urllib.request
 import mysql.connector
 from urllib.request import Request, urlopen
 
-def on_start():
-    course_dept = input('Department: ')
-    course_num = input('Course number: ')
+def on_start(dept, num):
+    # course_dept = input('Department: ')
+    # course_num = input('Course number: ')
+    course_dept = dept
+    course_num = num
+    print(course_dept)
+    print(course_num)
     begin = time.time()
-    url = 'https://www.lsa.umich.edu/cg/cg_results.aspx?termArray=w_19_2220&cgtype=ug&show=20&department='
+    url = 'https://www.lsa.umich.edu/cg/cg_results.aspx?termArray=f_19_2260&cgtype=ug&show=20&department='
     print('The course you are searching is: ' + course_dept + course_num + '\n\nSearching...\n')
     url += course_dept + '&catalog=' + course_num
     response = urllib.request.urlopen(url)
@@ -30,7 +35,7 @@ def general_page(url, html):
     doc = pq(html)
 
     #Course name
-    em = doc.find('.row.ClassRow.ClassHyperlink').eq(1)
+    em = doc.find('.row.ClassRow.ClassHyperlink').eq(0)
     # print('The course is also known as: ' + em.find('.col-sm-12 > a > font').text() + '\n')
     course_name = em.find('.col-sm-12 > a > font').text()
     print("course name: ", course_name[1:])
@@ -82,7 +87,7 @@ def detail_page(url, save):
     if doc.find('#contentMain_lblAdvPre').text():
         adv_req = doc.find('#contentMain_lblAdvPre').text()
         print('Advisory Prerequisites: ' + adv_req + '\n')
-        save['ad_prereq'] = pre_req
+        save['ad_prereq'] = adv_req
 
     #Course description
     if doc.find('#contentMain_lblDescr p').text():
@@ -104,7 +109,6 @@ def section_page(save, sec_save, section_num, instructor_name):
     score(save, sec_save, section_num, instructor_name)
     other_save(save, sec_save)
     print(save)
-    print('Saving to mysql...')
     sql = 'INSERT INTO courses (code, name, term, lsa_url, description, credit, id, section, instructor_name, instructor_score, instructor_url, en_prereq, ad_prereq, status, seats,restricted_seat, waitlist, time, location) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE code=%s, name=%s, term=%s, lsa_url=%s, description=%s, credit=%s, id=%s, section=%s, instructor_name=%s, instructor_score=%s, instructor_url=%s, en_prereq=%s, ad_prereq=%s, status=%s, seats=%s, restricted_seat=%s, waitlist=%s, time=%s, location=%s'
     val = (
         save['course_code'],
@@ -147,9 +151,8 @@ def section_page(save, sec_save, section_num, instructor_name):
         save['location']
     )
     global mycursor
+    print('Saving to mysql...')
     mycursor.execute(sql, val)
-    mydb.commit()
-    
     
 
 
@@ -263,6 +266,11 @@ def other_save(save, sec_save):
     save['location'] = location
 
 if __name__ == "__main__":
+    with open('../../shared/all_course_name_list.json') as f:
+        data = json.load(f)
+    name_list = data['name_list']
+    print(name_list)
+
     mydb = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -270,7 +278,11 @@ if __name__ == "__main__":
         database='courses_info'
     )
     mycursor = mydb.cursor()
-    on_start()
+    for course in name_list:
+        course = course.split()
+        print(course)
+        on_start(course[0], course[1])
+        mydb.commit()
 
     mycursor.execute("SELECT * FROM courses")
     myresult = mycursor.fetchall()

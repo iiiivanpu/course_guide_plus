@@ -22,6 +22,9 @@ CREATE TABLE courses (
     time VARCHAR(30), 
     location VARCHAR(50));
 
+sudo mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';
+
 
 mydb = mysql.connector.connezhiudact(
     host="localhost",
