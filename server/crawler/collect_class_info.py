@@ -31,7 +31,7 @@ def on_start(dept, num):
 
 def general_page(url, html):
     save = {}
-    save['lsa_url'] = url
+    
     doc = pq(html)
 
     #Course name
@@ -64,6 +64,8 @@ def general_page(url, html):
     detail_page(url, save)
 
 def detail_page(url, save):
+
+    save['lsa_url'] = url
 
     response = urllib.request.urlopen(url)
     html = response.read().decode('utf-8')
