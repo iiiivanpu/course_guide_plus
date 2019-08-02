@@ -19,7 +19,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
+    "predeploy": "yarn run build",
     "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
@@ -39,6 +39,7 @@
   },
   "homepage": "http://iiiivanpu.github.io/course_guide_plus",
   "devDependencies": {
+    "gh-pages": "2.0",
     "redux-devtools": "^3.5.0"
   }
 }
