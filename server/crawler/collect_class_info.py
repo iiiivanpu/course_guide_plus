@@ -4,6 +4,7 @@ import time
 import json
 import urllib.request
 import mysql.connector
+from random import shuffle
 from urllib.request import Request, urlopen
 
 def on_start(dept, num):
@@ -273,6 +274,7 @@ if __name__ == "__main__":
         data = json.load(f)
     name_list = data['name_list']
     print(name_list)
+    # shuffle(name_list)
 
     mydb = mysql.connector.connect(
         host="courses-info-public.cbq3qnmq2ztg.us-east-2.rds.amazonaws.com",

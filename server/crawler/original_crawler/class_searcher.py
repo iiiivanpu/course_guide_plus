@@ -180,19 +180,5 @@ def other_info(sec_info):
 	location = sec_info.find('.col-md-4 .loc_link').text()
 	print('Location: ' + location)
 
-if if __name__ == "__main__":
-	mydb = mysql.connector.connect(
-		host="localhost",
-		user="root",
-		passwd="",
-		database='courses_info'
-	)
-	mycursor = mydb.cursor()
+if __name__ == "__main__":
 	on_start()
-	myresult = mycursor.fetchall()
-
-	
-	for x in myresult:
-		print(x)
-
-	print(len(myresult))
