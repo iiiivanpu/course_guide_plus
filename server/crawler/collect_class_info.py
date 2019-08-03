@@ -1,4 +1,3 @@
-#from selenium import webdriver
 from pyquery import PyQuery as pq
 import re
 import time
@@ -111,6 +110,7 @@ def section_page(save, sec_save, section_num, instructor_name):
     score(save, sec_save, section_num, instructor_name)
     other_save(save, sec_save)
     print(save)
+    print('Saving to mysql...')
     sql = 'INSERT INTO courses (code, name, term, lsa_url, description, credit, id, section, instructor_name, instructor_score, instructor_url, en_prereq, ad_prereq, status, seats,restricted_seat, waitlist, time, location) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE code=%s, name=%s, term=%s, lsa_url=%s, description=%s, credit=%s, id=%s, section=%s, instructor_name=%s, instructor_score=%s, instructor_url=%s, en_prereq=%s, ad_prereq=%s, status=%s, seats=%s, restricted_seat=%s, waitlist=%s, time=%s, location=%s'
     val = (
         save['course_code'],
@@ -153,7 +153,7 @@ def section_page(save, sec_save, section_num, instructor_name):
         save['location']
     )
     global mycursor
-    print('Saving to mysql...')
+    
     mycursor.execute(sql, val)
     
 
@@ -209,6 +209,7 @@ def get_score(name_list):
         save = '+'
         save = save.join(name_list).replace(' ', '+')
         url = 'http://www.ratemyprofessors.com/search.jsp?query=' + save
+        print("Instructor url: ", url)
         req = Request(url, headers={'User-Agent': 'Mizilla/5.0'})
         doc = pq(urlopen(req).read().decode('utf-8'))
         for each in doc.find('.listing').items():
@@ -274,9 +275,9 @@ if __name__ == "__main__":
     print(name_list)
 
     mydb = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        passwd="",
+        host="courses-info-public.cbq3qnmq2ztg.us-east-2.rds.amazonaws.com",
+        user="ivanpu",
+        passwd="Ivanpu77",
         database='courses_info'
     )
     mycursor = mydb.cursor()
