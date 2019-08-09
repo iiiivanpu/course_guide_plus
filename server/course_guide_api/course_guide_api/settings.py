@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'return_info',
     'rest_framework',
     'api'
 ]
@@ -84,6 +83,14 @@ WSGI_APPLICATION = 'course_guide_api.wsgi.application'
 # }
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'courses_info',
+    #     'USER': 'ivanpu',
+    #     'PASSWORD': 'Ivanpu77',
+    #     'HOST': 'db-django.cbq3qnmq2ztg.us-east-2.rds.amazonaws.com',
+    #     'PORT': '3306',
+    # },
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'courses_info',

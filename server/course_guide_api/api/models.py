@@ -95,6 +95,9 @@ class Courses(models.Model):
     time = models.CharField(max_length=100, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
 
+    def __str__(self):
+        return self.code
+
     class Meta:
         managed = False
         db_table = 'courses'
