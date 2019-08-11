@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/course_guide_plus/static/js/main.cfc95e00.chunk.js",
-    "main.js.map": "/course_guide_plus/static/js/main.cfc95e00.chunk.js.map",
+    "main.js": "/course_guide_plus/static/js/main.95d9aba5.chunk.js",
+    "main.js.map": "/course_guide_plus/static/js/main.95d9aba5.chunk.js.map",
     "runtime~main.js": "/course_guide_plus/static/js/runtime~main.5a629017.js",
     "runtime~main.js.map": "/course_guide_plus/static/js/runtime~main.5a629017.js.map",
     "static/js/2.71edc72f.chunk.js": "/course_guide_plus/static/js/2.71edc72f.chunk.js",
     "static/js/2.71edc72f.chunk.js.map": "/course_guide_plus/static/js/2.71edc72f.chunk.js.map",
     "index.html": "/course_guide_plus/index.html",
-    "precache-manifest.d35907b17888a496686348c8f0fcd90c.js": "/course_guide_plus/precache-manifest.d35907b17888a496686348c8f0fcd90c.js",
+    "precache-manifest.a77c88583f3882bb9c89e061b483507b.js": "/course_guide_plus/precache-manifest.a77c88583f3882bb9c89e061b483507b.js",
     "service-worker.js": "/course_guide_plus/service-worker.js",
     "static/media/logo.png": "/course_guide_plus/static/media/logo.314b5011.png"
   }
