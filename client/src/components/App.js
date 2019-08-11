@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import WelcomePage from "./welcome-page";
+import MainPage from "./pages/main-page";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
-  couseInfo = () => {
+  About = () => {
     return (
       <div>
-        <h2>Course Info</h2>
+        <h2>About</h2>
       </div>
     );
   };
@@ -17,20 +17,17 @@ class App extends Component {
         <div>
           <ul>
             <li>
-              <Link to="/course_guide_plus/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/course_guide_plus/course_info">Course Info</Link>
+              <Link to="/about">About</Link>
             </li>
           </ul>
 
           <hr />
 
-          <Route exact path="/course_guide_plus/home" component={WelcomePage} />
-          <Route
-            path="/course_guide_plus/course_info"
-            component={this.couseInfo}
-          />
+          <Route exact path="/" component={MainPage} />
+          <Route path="/about" component={this.About} />
         </div>
       </Router>
     );

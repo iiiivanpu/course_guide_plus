@@ -59,7 +59,8 @@ class SearchBar extends React.Component {
         }}
         onChange={event => {
           console.log(event);
-          if (event.type === "select") this.props.selectAClass(event.option.id);
+          if (event.type === "select")
+            this.props.selectAClass(event.option.id.replace(/\s+/g, ""));
           else this.props.selectAClass(null);
         }}
         placeholder="Choose a class..."

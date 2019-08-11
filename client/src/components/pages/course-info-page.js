@@ -1,7 +1,7 @@
-import React from "react";
 import { styled } from "baseui";
-import Logo from "../static/logo.png";
-import SearchBar from "./serach-bar";
+import React from "react";
+import Logo from "../../static/logo.png";
+import SearchBar from "../serach-bar";
 
 const WelcomePageContainer = styled("div", {
   height: "55vh",
@@ -19,7 +19,7 @@ const SearchBarContainer = styled("div", {
   width: "80%"
 });
 
-export default class WelcomePage extends React.Component {
+export default class CourseInfoPage extends React.Component {
   render() {
     return (
       <WelcomePageContainer>
