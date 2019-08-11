@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import SearchBar from "./search-bar/serach-bar";
+import WelcomePage from "./welcome-page";
 
 class App extends Component {
   render() {
     return (
       <div className="app">
-        <SearchBar />
+        <WelcomePage />
       </div>
     );
   }
