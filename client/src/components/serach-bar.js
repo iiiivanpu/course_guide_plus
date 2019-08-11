@@ -59,13 +59,13 @@ class SearchBar extends React.Component {
         }}
         onChange={event => {
           console.log(event);
-          if (event.type === "select")
-            this.props.selectAClass(event.option.id.replace(/\s+/g, ""));
+          if (event.type === "select") this.props.selectAClass(event.option.id);
           else this.props.selectAClass(null);
         }}
-        placeholder="Choose a class..."
+        placeholder={this.props.courseName || "Choose a class..."}
         type={TYPE.search}
         maxDropdownHeight="200px"
+        clearable
       />
     );
   }
@@ -77,8 +77,12 @@ const mapDispatchToProps = dispatch => ({
   }
 });
 
+const mapStateToProps = state => ({
+  courseName: state.selectedClass
+});
+
 // Using null in the first argument to replace mapStateToProps
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(SearchBar);

@@ -1,4 +1,5 @@
 const INITIAL_STATE = {
+  // selectedClass: "EECS 485"
   selectedClass: null
 };
 

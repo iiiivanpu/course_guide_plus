@@ -5,7 +5,6 @@ import CourseInfoPage from "./course-info-page";
 
 class MainPage extends React.Component {
   render() {
-    console.log(this.props.courseName);
     return this.props.courseName === null ? <EmptyPage /> : <CourseInfoPage />;
   }
 }
