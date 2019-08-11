@@ -13,7 +13,7 @@ const ListItem = withStyle(StyledDropdownListItem, {
   display: "flex",
   alignItems: "center"
 });
-const Container = withStyle(StyledList, { height: "500px" });
+const Container = withStyle(StyledList, { height: "300px" });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
@@ -52,11 +52,19 @@ class SearchBar extends React.Component {
       <StatefulSelect
         options={newAllCourseNames}
         labelKey="id"
-        overrides={{ Dropdown: { component: VirtualList } }}
-        onChange={event => this.props.selectAClass(event.option.id)}
+        overrides={{
+          Dropdown: {
+            component: VirtualList
+          }
+        }}
+        onChange={event => {
+          console.log(event);
+          if (event.type === "select") this.props.selectAClass(event.option.id);
+          else this.props.selectAClass(null);
+        }}
         placeholder="Choose a class..."
         type={TYPE.search}
-        maxDropdownHeight="300px"
+        maxDropdownHeight="200px"
       />
     );
   }
