@@ -13,7 +13,7 @@ const ListItem = withStyle(StyledDropdownListItem, {
   display: "flex",
   alignItems: "center"
 });
-const Container = withStyle(StyledList, { height: "300px" });
+const Container = withStyle(StyledList, { height: "250px" });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
@@ -22,7 +22,7 @@ const VirtualList = React.forwardRef((props, ref) => {
         {({ width }) => (
           <List
             role={props.role}
-            height={500}
+            height={250}
             width={width}
             rowCount={props.children.length}
             rowHeight={36}
