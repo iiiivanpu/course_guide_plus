@@ -26,8 +26,11 @@ class App extends Component {
 
           <hr />
 
-          <Route exact path="/" component={WelcomePage} />
-          <Route path="/course_info" component={this.couseInfo} />
+          <Route exact path="/course_guide_plus/home" component={WelcomePage} />
+          <Route
+            path="/course_guide_plus/course_info"
+            component={this.couseInfo}
+          />
         </div>
       </Router>
     );
