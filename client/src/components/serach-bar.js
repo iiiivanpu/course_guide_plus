@@ -81,7 +81,6 @@ const mapStateToProps = state => ({
   courseName: state.selectedClass
 });
 
-// Using null in the first argument to replace mapStateToProps
 export default connect(
   mapStateToProps,
   mapDispatchToProps
