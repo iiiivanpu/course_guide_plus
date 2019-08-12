@@ -102,16 +102,14 @@ def detail_page(url, save):
     lec_lst = list(doc.find('.row.clsschedulerow.toppadding_main.bottompadding_main').items())[:len(save['section'])]
     assert len(save['section']) == len(lec_lst)
     print('There are %d sections: ' %len(save['section']))
-    save['sections'] = len(save['section'])
+    
     for i in range(len(lec_lst)):
         section_page(save.copy(), lec_lst[i], save['section'][i], save['instructor'][i])
         
+        
 def section_page(save, sec_save, section_num, instructor_name):
-    save['section'] = section_num
     score(save, sec_save, section_num, instructor_name)
     other_save(save, sec_save)
-    print(save)
-    print('Saving to mysql...')
     sql = 'INSERT INTO courses (code, name, term, lsa_url, description, credit, id, section, instructor_name, instructor_score, instructor_url, en_prereq, ad_prereq, status, seats,restricted_seat, waitlist, time, location) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE code=%s, name=%s, term=%s, lsa_url=%s, description=%s, credit=%s, id=%s, section=%s, instructor_name=%s, instructor_score=%s, instructor_url=%s, en_prereq=%s, ad_prereq=%s, status=%s, seats=%s, restricted_seat=%s, waitlist=%s, time=%s, location=%s'
     val = (
         save['course_code'],
@@ -121,7 +119,7 @@ def section_page(save, sec_save, section_num, instructor_name):
         save['description'],
         save['credit'],
         save['id'],
-        save['sections'],
+        section_num,
         save['instructor'],
         save['score'],
         save['url'],
@@ -140,7 +138,7 @@ def section_page(save, sec_save, section_num, instructor_name):
         save['description'],
         save['credit'],
         save['id'],
-        save['sections'],
+        section_num,
         save['instructor'],
         save['score'],
         save['url'],
@@ -154,7 +152,6 @@ def section_page(save, sec_save, section_num, instructor_name):
         save['location']
     )
     global mycursor
-    
     mycursor.execute(sql, val)
     
 
@@ -283,17 +280,17 @@ if __name__ == "__main__":
         database='courses_info'
     )
     mycursor = mydb.cursor()
-    for course in name_list:
-        course = course.split()
-        print(course)
-        on_start(course[0], course[1])
-        mydb.commit()
+    # for course in name_list:
+    #     course = course.split()
+    #     print(course)
+    #     on_start(course[0], course[1])
+    #     mydb.commit()
 
-    mycursor.execute("SELECT * FROM courses")
+    on_start('EECS', '485')
+    mydb.commit()
+
+    mycursor.execute("SELECT * FROM courses WHERE code='EECS 485'")
     myresult = mycursor.fetchall()
-
-    
-    for x in myresult:
-        print(x)
-
+    for result in myresult:
+        print(result)
     print(len(myresult))
