@@ -1,13 +1,26 @@
+# Course Guide Plus
+
 This project is based on LSA Course Guide, but it provides much more features.
 
-To run the front end locally, cd into `/client` folder and run:
+## Cliend Side
+The following operations need to be run under the `/client` folder:
+```
+cd client
+```
 
+To run the front end locally, run:
 ```
 yarn start
 ```
 
-To publish on Github Pages, cd into `/client` folder and run:
-
+To publish on Github Pages, run:
 ```
 yarn deploy
 ```
+
+Public Github Page of the website located at:
+```
+https://iiiivanpu.github.io/course_guide_plus
+```
+
+## Server Side
