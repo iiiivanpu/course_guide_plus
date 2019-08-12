@@ -17,17 +17,17 @@ class App extends Component {
         <div>
           <ul>
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/course_guide_plus">Home</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/course_guide_plus/about">About</Link>
             </li>
           </ul>
 
           <hr />
 
-          <Route exact path="/" component={MainPage} />
-          <Route path="/about" component={this.About} />
+          <Route exact path="/course_guide_plus" component={MainPage} />
+          <Route path="/course_guide_plus/about" component={this.About} />
         </div>
       </Router>
     );
