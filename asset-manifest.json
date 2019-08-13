@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.js": "/static/js/main.13e790c4.chunk.js",
-    "main.js.map": "/static/js/main.13e790c4.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/js/2.4317ac99.chunk.js": "/static/js/2.4317ac99.chunk.js",
-    "static/js/2.4317ac99.chunk.js.map": "/static/js/2.4317ac99.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.f43e736c093990e6109b40ea06780958.js": "/precache-manifest.f43e736c093990e6109b40ea06780958.js",
-    "service-worker.js": "/service-worker.js",
-    "static/media/logo.png": "/static/media/logo.314b5011.png"
+    "main.js": "/course_guide_plus/static/js/main.59ee25fb.chunk.js",
+    "main.js.map": "/course_guide_plus/static/js/main.59ee25fb.chunk.js.map",
+    "runtime~main.js": "/course_guide_plus/static/js/runtime~main.5a629017.js",
+    "runtime~main.js.map": "/course_guide_plus/static/js/runtime~main.5a629017.js.map",
+    "static/js/2.4317ac99.chunk.js": "/course_guide_plus/static/js/2.4317ac99.chunk.js",
+    "static/js/2.4317ac99.chunk.js.map": "/course_guide_plus/static/js/2.4317ac99.chunk.js.map",
+    "index.html": "/course_guide_plus/index.html",
+    "precache-manifest.2a759b090e42cf2054c0648727f4f248.js": "/course_guide_plus/precache-manifest.2a759b090e42cf2054c0648727f4f248.js",
+    "service-worker.js": "/course_guide_plus/service-worker.js",
+    "static/media/logo.png": "/course_guide_plus/static/media/logo.314b5011.png"
   }
 }
