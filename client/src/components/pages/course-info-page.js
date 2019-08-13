@@ -109,6 +109,9 @@ const SectionInfoCointainer = styled('div', {
   marginBottom: '30px',
   width: '70%',
 });
+const SectionInfoCointainerMobile = styled('div', {
+  marginBottom: '30px',
+});
 
 class CourseInfoPage extends React.Component {
   state = {
@@ -245,7 +248,7 @@ class CourseInfoPage extends React.Component {
           } = currentSection;
           console.log(section);
           classElements.push(
-            <SectionInfoCointainer>
+            <SectionInfoCointainerMobile>
               <SectionTitle>{`Section - ${section}`}</SectionTitle>
               <InfoContainerMobile>
                 <ClassInfoItemMobile>
@@ -319,7 +322,7 @@ class CourseInfoPage extends React.Component {
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
               </InfoContainerMobile>
-            </SectionInfoCointainer>
+            </SectionInfoCointainerMobile>
           );
         });
       } else {
