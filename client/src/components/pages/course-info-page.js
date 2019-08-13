@@ -360,7 +360,9 @@ class CourseInfoPage extends React.Component {
                   </ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
                     {instructorUrl ? (
-                      <StyledLink href={classUrl}>{classUrl}</StyledLink>
+                      <StyledLink href={instructorUrl}>
+                        {instructorUrl}
+                      </StyledLink>
                     ) : (
                       'N/A'
                     )}
@@ -516,7 +518,9 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemBold>RateMyProfessor Link:</ClassInfoItemBold>
                     <ClassInfoItemRegular>
                       {instructorUrl ? (
-                        <StyledLink href={classUrl}>{classUrl}</StyledLink>
+                        <StyledLink href={instructorUrl}>
+                          {instructorUrl}
+                        </StyledLink>
                       ) : (
                         'N/A'
                       )}
