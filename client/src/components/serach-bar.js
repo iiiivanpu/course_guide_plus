@@ -27,9 +27,12 @@ const VirtualList = React.forwardRef((props, ref) => {
             rowCount={props.children.length}
             rowHeight={36}
             rowRenderer={({ index, key, style }) => {
+              const { resetMenu, getItemLabel, ...childProps } = children[
+                index
+              ].props;
               return (
-                <ListItem key={key} style={style} {...children[index].props}>
-                  {children[index].props.item.id}
+                <ListItem key={key} style={style} {...childProps}>
+                  {childProps.item.id}
                 </ListItem>
               );
             }}

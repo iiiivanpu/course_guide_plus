@@ -10,8 +10,7 @@ const WelcomePageContainer = styled("div", {
   height: "20vh",
   display: "flex",
   flexDirection: "column",
-  marginLeft: "30px",
-  marginTop: "30px"
+  margin: "30px 30px 0 30px"
 });
 const LogoContainer = styled("img", {
   marginBottom: "30px",
@@ -29,6 +28,14 @@ const ClassInfo = styled("div", {
   borderRadius: "10px",
   padding: "10px"
 });
+const ClassInfoMobile = styled("div", {
+  display: "table",
+  justifyContent: "space-around",
+  border: "1px solid grey",
+  borderRadius: "10px",
+  padding: "5px",
+  borderSpacing: "10px"
+});
 const ClassInfoLeft = styled("div", {
   flexGrow: "1",
   flexBasis: "0"
@@ -38,13 +45,14 @@ const ClassInfoRight = styled("div", {
   flexBasis: "0"
 });
 const ClassInfoContainer = styled("div", {
-  left: "20px",
-  right: "20px",
   marginBottom: "30px"
 });
 const ClassInfoItem = styled("div", {
   display: "table",
   borderSpacing: "5px"
+});
+const ClassInfoItemMobile = styled("div", {
+  display: "table-row"
 });
 const ClassInfoItemBold = styled("div", {
   fontWeight: "bold",
@@ -71,31 +79,55 @@ const SectionTitle = styled("div", {
   border: "1px solid grey",
   borderRadius: "10px"
 });
+const SpinnerContainer = styled("div", {
+  marginTop: "50px"
+});
 
 class CourseInfoPage extends React.Component {
   state = {
-    course: null,
+    courseName: null,
+    courseInfo: null,
     loading: true
   };
 
   fetchCourse() {
+    if (!this.state.loading) this.setState({ loading: true });
+    const { courseName } = this.props;
     const [type, number] = this.props.courseName.split(" ");
-    console.log(type, number);
-    fetch(
-      `http://django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com/api/classes/${type}/${number}`
-    )
-      .then(res => res.json())
-      .then(data => {
-        if (data.length !== 0)
-          this.setState({ course: data, loading: false }, () =>
-            console.log(this.state.course)
-          );
-      })
-      .catch(console.log);
+    const requestUrl = `http://django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com/api/classes/${type}/${number}`;
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = e => {
+      if (xhr.readyState !== 4) {
+        return;
+      }
+      if (xhr.status === 200) {
+        try {
+          const res = JSON.parse(xhr.responseText);
+          if (res)
+            this.setState(
+              { courseName: courseName, courseInfo: res, loading: false },
+              () => console.log(this.state.courseInfo)
+            );
+        } catch (e) {
+          console.warn(e);
+        }
+      } else {
+        console.warn("error");
+      }
+    };
+    xhr.timeout = 3000; // timeout in 3 seconds
+    xhr.ontimeout = e => {
+      this.setState({ courseInfo: null, loading: false }, () =>
+        console.log("Failed to fetch the course information")
+      );
+    };
+    xhr.open("GET", requestUrl);
+    xhr.send();
   }
 
-  componentDidUpdate() {
-    if (this.state.loading) this.fetchCourse();
+  componentDidUpdate(prevProps) {
+    if (this.state.loading || prevProps.courseName !== this.props.courseName)
+      this.fetchCourse();
   }
 
   componentDidMount() {
@@ -103,47 +135,80 @@ class CourseInfoPage extends React.Component {
   }
 
   renderClass() {
-    const courseInfo = this.state.course[0];
-    if (courseInfo === null) return null;
+    const courseInfo = this.state.courseInfo[0];
+    if (courseInfo === null || typeof courseInfo === "undefined") return null;
     let classElements = [];
     // Render class info
+    console.log(courseInfo);
     const title = `${courseInfo.code} - ${courseInfo.name}`;
     console.log(courseInfo, courseInfo.code);
     const department = courseInfo.code.split(" ")[0];
     const enforcedPrereq = courseInfo.en_prereq;
     const { credit, term, description } = courseInfo;
 
-    classElements.push(
-      <ClassInfoContainer key="classInfo">
-        <ClassTitle>{title}</ClassTitle>
-        <ClassInfo>
-          <ClassInfoLeft>
-            <ClassInfoItem>
-              <ClassInfoItemBold>Department: </ClassInfoItemBold>
+    if (this.props.isMobile) {
+      // Currently on a mobile device
+      classElements.push(
+        <ClassInfoContainer key="classInfo-mobile">
+          <ClassTitle>{title}</ClassTitle>
+          <ClassInfoMobile>
+            <ClassInfoItemMobile>
+              <ClassInfoItemBold>Department:</ClassInfoItemBold>
               <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
-            </ClassInfoItem>
-            <ClassInfoItem>
-              <ClassInfoItemBold>Credit: </ClassInfoItemBold>
+            </ClassInfoItemMobile>
+            <ClassInfoItemMobile>
+              <ClassInfoItemBold>Credit:</ClassInfoItemBold>
               <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
-            </ClassInfoItem>
-            <ClassInfoItem>
-              <ClassInfoItemBold>Term: </ClassInfoItemBold>
+            </ClassInfoItemMobile>
+            <ClassInfoItemMobile>
+              <ClassInfoItemBold>Term:</ClassInfoItemBold>
               <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-            </ClassInfoItem>
-            <ClassInfoItem>
-              <ClassInfoItemBold>Enforced Prerequisites: </ClassInfoItemBold>
+            </ClassInfoItemMobile>
+            <ClassInfoItemMobile>
+              <ClassInfoItemBold>Enforced Prerequisites:</ClassInfoItemBold>
               <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
-            </ClassInfoItem>
-          </ClassInfoLeft>
-          <ClassInfoRight>
-            <ClassInfoItem>
-              <ClassInfoItemBold>Description: </ClassInfoItemBold>
+            </ClassInfoItemMobile>
+            <ClassInfoItemMobile>
+              <ClassInfoItemBold>Description:</ClassInfoItemBold>
               <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
-            </ClassInfoItem>
-          </ClassInfoRight>
-        </ClassInfo>
-      </ClassInfoContainer>
-    );
+            </ClassInfoItemMobile>
+          </ClassInfoMobile>
+        </ClassInfoContainer>
+      );
+    } else {
+      // Currently on a pc
+      classElements.push(
+        <ClassInfoContainer key="classInfo-pc">
+          <ClassTitle>{title}</ClassTitle>
+          <ClassInfo>
+            <ClassInfoLeft>
+              <ClassInfoItem>
+                <ClassInfoItemBold>Department: </ClassInfoItemBold>
+                <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
+              </ClassInfoItem>
+              <ClassInfoItem>
+                <ClassInfoItemBold>Credit: </ClassInfoItemBold>
+                <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
+              </ClassInfoItem>
+              <ClassInfoItem>
+                <ClassInfoItemBold>Term: </ClassInfoItemBold>
+                <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
+              </ClassInfoItem>
+              <ClassInfoItem>
+                <ClassInfoItemBold>Enforced Prerequisites: </ClassInfoItemBold>
+                <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
+              </ClassInfoItem>
+            </ClassInfoLeft>
+            <ClassInfoRight>
+              <ClassInfoItem>
+                <ClassInfoItemBold>Description: </ClassInfoItemBold>
+                <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
+              </ClassInfoItem>
+            </ClassInfoRight>
+          </ClassInfo>
+        </ClassInfoContainer>
+      );
+    }
 
     // Render section info
 
@@ -156,10 +221,12 @@ class CourseInfoPage extends React.Component {
         <LogoContainer src={Logo} alt="website logo" />
         <SearchBarContainer>
           <SearchBar />
+          {this.state.loading && (
+            <SpinnerContainer>
+              <Spinner size={70} />
+            </SpinnerContainer>
+          )}
         </SearchBarContainer>
-        {this.state.loading && (
-          <Spinner size={70} style={{ position: "absolute", top: "38%" }} />
-        )}
         {!this.state.loading && this.renderClass()}
       </WelcomePageContainer>
     );
@@ -167,7 +234,8 @@ class CourseInfoPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  courseName: state.selectedClass
+  courseName: state.selectedClass,
+  isMobile: state.isMobile
 });
 
 export default connect(

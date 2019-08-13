@@ -1,8 +1,27 @@
 import React, { Component } from "react";
 import MainPage from "./pages/main-page";
+import { updateIsMobile } from "../reducers/mainUi";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 class App extends Component {
+  componentWillMount() {
+    window.addEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleWindowSizeChange);
+  }
+
+  componentDidMount() {
+    this.handleWindowSizeChange();
+  }
+
+  handleWindowSizeChange = () => {
+    const isMobile = window.innerWidth <= 500;
+    this.props.updateIsMobile(isMobile);
+  };
+
   About = () => {
     return (
       <div>
@@ -33,4 +52,15 @@ class App extends Component {
   }
 }
 
-export default App;
+// export default App;
+
+const mapDispatchToProps = dispatch => ({
+  updateIsMobile: isMobile => {
+    dispatch(updateIsMobile(isMobile));
+  }
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);
