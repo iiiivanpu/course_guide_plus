@@ -23,7 +23,6 @@ class App extends Component {
               <Link to="/course_guide_plus/about">About</Link>
             </li>
           </ul>
-
           <hr />
 
           <Route exact path="/course_guide_plus" component={MainPage} />
