@@ -137,82 +137,94 @@ class CourseInfoPage extends React.Component {
   }
 
   renderClass() {
-    const courseInfo = this.state.courseInfo[0];
-    if (courseInfo === null || typeof courseInfo === "undefined") return null;
     let classElements = [];
-    // Render class info
-    console.log(courseInfo);
-    const title = `${courseInfo.code} - ${courseInfo.name}`;
-    console.log(courseInfo, courseInfo.code);
-    const department = courseInfo.code.split(" ")[0];
-    const enforcedPrereq = courseInfo.en_prereq;
-    const { credit, term, description } = courseInfo;
-
-    if (this.props.isMobile) {
-      // Currently on a mobile device
+    if (this.state.courseInfo.length === 0) {
       classElements.push(
-        <ClassInfoContainer key="classInfo-mobile">
-          <ClassTitle>{title}</ClassTitle>
-          <ClassInfoMobile>
-            <ClassInfoItemMobile>
-              <ClassInfoItemBold>Department:</ClassInfoItemBold>
-              <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
-            </ClassInfoItemMobile>
-            <ClassInfoItemMobile>
-              <ClassInfoItemBold>Credit:</ClassInfoItemBold>
-              <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
-            </ClassInfoItemMobile>
-            <ClassInfoItemMobile>
-              <ClassInfoItemBold>Term:</ClassInfoItemBold>
-              <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-            </ClassInfoItemMobile>
-            <ClassInfoItemMobile>
-              <ClassInfoItemBold>Enforced Prerequisites:</ClassInfoItemBold>
-              <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
-            </ClassInfoItemMobile>
-            <ClassInfoItemMobile>
-              <ClassInfoItemBold>Description:</ClassInfoItemBold>
-              <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
-            </ClassInfoItemMobile>
-          </ClassInfoMobile>
+        <ClassInfoContainer key="classInfo-empty">
+          <div>
+            There is no data for the selected class right now. Please try again
+            later!
+          </div>
         </ClassInfoContainer>
       );
     } else {
-      // Currently on a pc
-      classElements.push(
-        <ClassInfoContainer key="classInfo-pc">
-          <ClassTitle>{title}</ClassTitle>
-          <ClassInfo>
-            <ClassInfoLeft>
-              <ClassInfoItem>
-                <ClassInfoItemBold>Department: </ClassInfoItemBold>
-                <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
-              </ClassInfoItem>
-              <ClassInfoItem>
-                <ClassInfoItemBold>Credit: </ClassInfoItemBold>
-                <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
-              </ClassInfoItem>
-              <ClassInfoItem>
-                <ClassInfoItemBold>Term: </ClassInfoItemBold>
-                <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-              </ClassInfoItem>
-              <ClassInfoItem>
-                <ClassInfoItemBold>Enforced Prerequisites: </ClassInfoItemBold>
-                <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
-              </ClassInfoItem>
-            </ClassInfoLeft>
-            <ClassInfoRight>
-              <ClassInfoItem>
-                <ClassInfoItemBold>Description: </ClassInfoItemBold>
-                <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
-              </ClassInfoItem>
-            </ClassInfoRight>
-          </ClassInfo>
-        </ClassInfoContainer>
-      );
-    }
+      const classInfo = this.state.courseInfo[0];
+      // Render class info
+      console.log(classInfo);
+      const title = `${classInfo.code} - ${classInfo.name}`;
+      console.log(classInfo, classInfo.code);
+      const department = classInfo.code.split(" ")[0];
+      const enforcedPrereq = classInfo.en_prereq;
+      const { credit, term, description } = classInfo;
 
-    // Render section info
+      if (this.props.isMobile) {
+        // Currently on a mobile device
+        classElements.push(
+          <ClassInfoContainer key="classInfo-mobile">
+            <ClassTitle>{title}</ClassTitle>
+            <ClassInfoMobile>
+              <ClassInfoItemMobile>
+                <ClassInfoItemBold>Department:</ClassInfoItemBold>
+                <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
+              </ClassInfoItemMobile>
+              <ClassInfoItemMobile>
+                <ClassInfoItemBold>Credit:</ClassInfoItemBold>
+                <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
+              </ClassInfoItemMobile>
+              <ClassInfoItemMobile>
+                <ClassInfoItemBold>Term:</ClassInfoItemBold>
+                <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
+              </ClassInfoItemMobile>
+              <ClassInfoItemMobile>
+                <ClassInfoItemBold>Enforced Prerequisites:</ClassInfoItemBold>
+                <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
+              </ClassInfoItemMobile>
+              <ClassInfoItemMobile>
+                <ClassInfoItemBold>Description:</ClassInfoItemBold>
+                <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
+              </ClassInfoItemMobile>
+            </ClassInfoMobile>
+          </ClassInfoContainer>
+        );
+      } else {
+        // Currently on a pc
+        classElements.push(
+          <ClassInfoContainer key="classInfo-pc">
+            <ClassTitle>{title}</ClassTitle>
+            <ClassInfo>
+              <ClassInfoLeft>
+                <ClassInfoItem>
+                  <ClassInfoItemBold>Department: </ClassInfoItemBold>
+                  <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
+                </ClassInfoItem>
+                <ClassInfoItem>
+                  <ClassInfoItemBold>Credit: </ClassInfoItemBold>
+                  <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
+                </ClassInfoItem>
+                <ClassInfoItem>
+                  <ClassInfoItemBold>Term: </ClassInfoItemBold>
+                  <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
+                </ClassInfoItem>
+                <ClassInfoItem>
+                  <ClassInfoItemBold>
+                    Enforced Prerequisites:{" "}
+                  </ClassInfoItemBold>
+                  <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
+                </ClassInfoItem>
+              </ClassInfoLeft>
+              <ClassInfoRight>
+                <ClassInfoItem>
+                  <ClassInfoItemBold>Description: </ClassInfoItemBold>
+                  <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
+                </ClassInfoItem>
+              </ClassInfoRight>
+            </ClassInfo>
+          </ClassInfoContainer>
+        );
+      }
+
+      // Render section info
+    }
 
     return classElements;
   }
