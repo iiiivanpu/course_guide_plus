@@ -245,6 +245,9 @@ class CourseInfoPage extends React.Component {
   renderClass() {
     let classElements = [];
     const allSections = this.state.courseInfo;
+    // Sort the array of sections by section id
+    allSections.sort((a, b) => (a.section > b.section ? 1 : -1));
+    console.log(allSections);
     if (allSections.length === 0) {
       classElements.push(
         <ClassInfoContainer key="classInfo-empty">
