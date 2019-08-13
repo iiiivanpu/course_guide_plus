@@ -1,7 +1,7 @@
-import React from "react";
-import { connect } from "react-redux";
-import EmptyPage from "./empty-page";
-import CourseInfoPage from "./course-info-page";
+import React from 'react';
+import { connect } from 'react-redux';
+import EmptyPage from './empty-page';
+import CourseInfoPage from './course-info-page';
 
 class MainPage extends React.Component {
   render() {
@@ -10,7 +10,7 @@ class MainPage extends React.Component {
 }
 
 const mapStateToProps = state => ({
-  courseName: state.selectedClass
+  courseName: state.selectedClass,
 });
 
 export default connect(

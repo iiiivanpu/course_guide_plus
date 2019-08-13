@@ -1,26 +1,26 @@
-import { styled } from "baseui";
-import React from "react";
-import Logo from "../../static/logo.png";
-import SearchBar from "../serach-bar";
-import { selectAClass } from "../../reducers/mainUi";
-import { connect } from "react-redux";
+import { styled } from 'baseui';
+import React from 'react';
+import Logo from '../../static/logo.png';
+import SearchBar from '../serach-bar';
+import { selectAClass } from '../../reducers/mainUi';
+import { connect } from 'react-redux';
 
-const WelcomePageContainer = styled("div", {
-  height: "55vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  flexDirection: "column"
+const WelcomePageContainer = styled('div', {
+  height: '55vh',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
 });
-const LogoContainer = styled("img", {
-  marginBottom: "30px",
-  width: "50%",
-  userSelect: "none",
-  cursor: "pointer"
+const LogoContainer = styled('img', {
+  marginBottom: '30px',
+  width: '50%',
+  userSelect: 'none',
+  cursor: 'pointer',
 });
-const SearchBarContainer = styled("div", {
-  position: "aboluste",
-  width: "80%"
+const SearchBarContainer = styled('div', {
+  position: 'aboluste',
+  width: '80%',
 });
 
 class EmptyPage extends React.Component {
@@ -43,7 +43,7 @@ class EmptyPage extends React.Component {
 const mapDispatchToProps = dispatch => ({
   selectAClass: className => {
     dispatch(selectAClass(className));
-  }
+  },
 });
 
 export default connect(

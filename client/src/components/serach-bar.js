@@ -1,19 +1,19 @@
-import React from "react";
-import { withStyle } from "baseui";
-import { StatefulSelect, StyledDropdownListItem, TYPE } from "baseui/select";
-import { StyledList } from "baseui/menu";
-import List from "react-virtualized/dist/commonjs/List";
-import AutoSizer from "react-virtualized/dist/commonjs/AutoSizer";
-import { connect } from "react-redux";
-import { selectAClass } from "../reducers/mainUi";
+import React from 'react';
+import { withStyle } from 'baseui';
+import { StatefulSelect, StyledDropdownListItem, TYPE } from 'baseui/select';
+import { StyledList } from 'baseui/menu';
+import List from 'react-virtualized/dist/commonjs/List';
+import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
+import { connect } from 'react-redux';
+import { selectAClass } from '../reducers/mainUi';
 
 const ListItem = withStyle(StyledDropdownListItem, {
   paddingTop: 0,
   paddingBottom: 0,
-  display: "flex",
-  alignItems: "center"
+  display: 'flex',
+  alignItems: 'center',
 });
-const Container = withStyle(StyledList, { height: "250px" });
+const Container = withStyle(StyledList, { height: '250px' });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
@@ -42,7 +42,7 @@ const VirtualList = React.forwardRef((props, ref) => {
     </Container>
   );
 });
-const json = require("../constants/all_course_name_list.json");
+const json = require('../constants/all_course_name_list.json');
 const newAllCourseNames = json.name_list.sort().reduce((memo, name) => {
   memo.push({ id: name });
   return memo;
@@ -57,19 +57,19 @@ class SearchBar extends React.Component {
         labelKey="id"
         overrides={{
           Dropdown: {
-            component: VirtualList
-          }
+            component: VirtualList,
+          },
         }}
         onChange={event => {
           console.log(event);
-          if (event.type === "select") this.props.selectAClass(event.option.id);
+          if (event.type === 'select') this.props.selectAClass(event.option.id);
           else this.props.selectAClass(null);
         }}
-        placeholder={"Choose a class..."}
+        placeholder={'Choose a class...'}
         type={TYPE.search}
         maxDropdownHeight="200px"
         initialState={{
-          value: this.props.courseName ? [{ id: this.props.courseName }] : null
+          value: this.props.courseName ? [{ id: this.props.courseName }] : null,
         }}
       />
     );
@@ -79,11 +79,11 @@ class SearchBar extends React.Component {
 const mapDispatchToProps = dispatch => ({
   selectAClass: className => {
     dispatch(selectAClass(className));
-  }
+  },
 });
 
 const mapStateToProps = state => ({
-  courseName: state.selectedClass
+  courseName: state.selectedClass,
 });
 
 export default connect(

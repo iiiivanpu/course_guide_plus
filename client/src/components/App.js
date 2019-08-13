@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import MainPage from "./pages/main-page";
-import { updateIsMobile } from "../reducers/mainUi";
-import { connect } from "react-redux";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import React, { Component } from 'react';
+import MainPage from './pages/main-page';
+import { updateIsMobile } from '../reducers/mainUi';
+import { connect } from 'react-redux';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 class App extends Component {
   componentWillMount() {
-    window.addEventListener("resize", this.handleWindowSizeChange);
+    window.addEventListener('resize', this.handleWindowSizeChange);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.handleWindowSizeChange);
+    window.removeEventListener('resize', this.handleWindowSizeChange);
   }
 
   componentDidMount() {
@@ -57,7 +57,7 @@ class App extends Component {
 const mapDispatchToProps = dispatch => ({
   updateIsMobile: isMobile => {
     dispatch(updateIsMobile(isMobile));
-  }
+  },
 });
 
 export default connect(
