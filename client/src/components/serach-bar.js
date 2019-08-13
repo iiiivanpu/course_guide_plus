@@ -65,10 +65,12 @@ class SearchBar extends React.Component {
           if (event.type === "select") this.props.selectAClass(event.option.id);
           else this.props.selectAClass(null);
         }}
-        placeholder={this.props.courseName || "Choose a class..."}
+        placeholder={"Choose a class..."}
         type={TYPE.search}
         maxDropdownHeight="200px"
-        clearable
+        initialState={{
+          value: this.props.courseName ? [{ id: this.props.courseName }] : null
+        }}
       />
     );
   }
