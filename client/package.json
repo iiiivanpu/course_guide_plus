@@ -44,5 +44,10 @@
   "devDependencies": {
     "gh-pages": "2.0",
     "redux-devtools": "^3.5.0"
+  },
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": true,
+    "singleQuote": true
   }
 }
