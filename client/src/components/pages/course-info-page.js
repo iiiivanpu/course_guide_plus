@@ -331,7 +331,7 @@ class CourseInfoPage extends React.Component {
           } = currentSection;
           console.log(section);
           classElements.push(
-            <SectionInfoCointainerMobile>
+            <SectionInfoCointainerMobile key={sectionId}>
               <SectionTitle>{`Section - ${section}`}</SectionTitle>
               <InfoContainerMobile>
                 <ClassInfoItemMobile>
@@ -468,7 +468,7 @@ class CourseInfoPage extends React.Component {
           } = currentSection;
           console.log(section);
           classElements.push(
-            <SectionInfoCointainer>
+            <SectionInfoCointainer key={sectionId}>
               <SectionTitle>{`Section - ${section}`}</SectionTitle>
               <InfoContainer>
                 <ClassInfoLeft>
