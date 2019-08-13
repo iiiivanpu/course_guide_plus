@@ -3,7 +3,7 @@ import React from "react";
 import Logo from "../../static/logo.png";
 import SearchBar from "../serach-bar";
 import { Spinner } from "baseui/spinner";
-
+import { selectAClass } from "../../reducers/mainUi";
 import { connect } from "react-redux";
 
 const WelcomePageContainer = styled("div", {
@@ -14,7 +14,9 @@ const WelcomePageContainer = styled("div", {
 });
 const LogoContainer = styled("img", {
   marginBottom: "30px",
-  width: "30%"
+  width: "30%",
+  userSelect: "none",
+  cursor: "pointer"
 });
 const SearchBarContainer = styled("div", {
   width: "60%",
@@ -218,7 +220,11 @@ class CourseInfoPage extends React.Component {
   render() {
     return (
       <WelcomePageContainer>
-        <LogoContainer src={Logo} alt="website logo" />
+        <LogoContainer
+          src={Logo}
+          alt="website logo"
+          onClick={() => this.props.selectAClass(null)}
+        />
         <SearchBarContainer>
           <SearchBar />
           {this.state.loading && (
@@ -238,7 +244,12 @@ const mapStateToProps = state => ({
   isMobile: state.isMobile
 });
 
+const mapDispatchToProps = dispatch => ({
+  selectAClass: className => {
+    dispatch(selectAClass(className));
+  }
+});
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(CourseInfoPage);
