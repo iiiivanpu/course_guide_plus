@@ -5,15 +5,15 @@ import { StyledList } from 'baseui/menu';
 import List from 'react-virtualized/dist/commonjs/List';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import { connect } from 'react-redux';
-import { selectAClass } from '../../reducers/mainUi';
+import { selectAClass } from '../reducers/mainUi';
 
 const ListItem = withStyle(StyledDropdownListItem, {
   paddingTop: 0,
   paddingBottom: 0,
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
 });
-const Container = withStyle(StyledList, { height: '500px' });
+const Container = withStyle(StyledList, { height: '250px' });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
@@ -22,14 +22,17 @@ const VirtualList = React.forwardRef((props, ref) => {
         {({ width }) => (
           <List
             role={props.role}
-            height={500}
+            height={250}
             width={width}
-            rowCount={props.children.length}
+            rowCount={props.children.length || 0}
             rowHeight={36}
             rowRenderer={({ index, key, style }) => {
+              const { resetMenu, getItemLabel, ...childProps } = children[
+                index
+              ].props;
               return (
-                <ListItem key={key} style={style} {...children[index].props}>
-                  {children[index].props.item.id}
+                <ListItem key={key} style={style} {...childProps}>
+                  {childProps.item.id}
                 </ListItem>
               );
             }}
@@ -39,12 +42,11 @@ const VirtualList = React.forwardRef((props, ref) => {
     </Container>
   );
 });
-const json = require('../../constants/all_course_name_list.json');
+const json = require('../constants/all_course_name_list.json');
 const newAllCourseNames = json.name_list.sort().reduce((memo, name) => {
   memo.push({ id: name });
   return memo;
 }, []);
-console.log(newAllCourseNames);
 
 class SearchBar extends React.Component {
   render() {
@@ -52,11 +54,21 @@ class SearchBar extends React.Component {
       <StatefulSelect
         options={newAllCourseNames}
         labelKey="id"
-        overrides={{ Dropdown: { component: VirtualList } }}
-        onChange={event => this.props.selectAClass(event.option.id)}
-        placeholder="Choose a class..."
+        overrides={{
+          Dropdown: {
+            component: VirtualList,
+          },
+        }}
+        onChange={event => {
+          if (event.type === 'select') this.props.selectAClass(event.option.id);
+          else this.props.selectAClass(null);
+        }}
+        placeholder={'Choose a class...'}
         type={TYPE.search}
-        maxDropdownHeight="300px"
+        maxDropdownHeight="200px"
+        initialState={{
+          value: this.props.courseName ? [{ id: this.props.courseName }] : null,
+        }}
       />
     );
   }
@@ -65,8 +77,14 @@ class SearchBar extends React.Component {
 const mapDispatchToProps = dispatch => ({
   selectAClass: className => {
     dispatch(selectAClass(className));
-  }
+  },
 });
 
-// Using null in the first argument to replace mapStateToProps
-export default connect(null, mapDispatchToProps)(SearchBar);
+const mapStateToProps = state => ({
+  courseName: state.selectedClass,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SearchBar);
