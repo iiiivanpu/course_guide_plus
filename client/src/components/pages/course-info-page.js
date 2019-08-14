@@ -608,6 +608,7 @@ class CourseInfoPage extends React.Component {
           src={Logo}
           alt="website logo"
           onClick={() => this.props.selectAClass(null)}
+          draggable="false"
         />
         <SearchBarContainer>
           <SearchBar />
