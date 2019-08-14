@@ -11,7 +11,6 @@ const WelcomePageContainer = styled('div', props => ({
   display: 'flex',
   flexDirection: 'column',
   margin: props.$isMobile ? '5px' : '30px 30px 0 30px',
-  // minWidth: props.$isMobile ? '300px' : '1150px',
 }));
 const StyledLink = styled('a', props => ({
   color: '#2c3e6d',
@@ -61,8 +60,6 @@ const ClassInfoRight = styled('div', {
 });
 const ClassInfoItem = styled('div', {
   display: 'table-row',
-  // display: 'flex',
-  // flexDirection: 'column',
 });
 const ClassInfoItemBold = styled('div', {
   fontWeight: 'bold',
@@ -73,7 +70,6 @@ const ClassInfoItemBold = styled('div', {
   margin: '5px',
 });
 const ClassInfoItemRegular = styled('div', {
-  // display: 'table-cell',
   flexGrow: '2',
   flexBasis: '0',
 });
@@ -153,7 +149,7 @@ class CourseInfoPage extends React.Component {
     }
 
     const [type, number] = courseName.split(' ');
-    const requestUrl = `http://django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com/api/classes/${type}/${number}`;
+    const requestUrl = `https://api.course-guide-plus.ml/classes/${type}/${number}`;
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = e => {
       if (xhr.readyState !== 4) {
@@ -186,99 +182,6 @@ class CourseInfoPage extends React.Component {
     };
     xhr.open('GET', requestUrl);
     xhr.send();
-
-    // const test = [
-    //   {
-    //     code: 'EECS 485',
-    //     name: 'Web Systems',
-    //     term: 'FA 2019',
-    //     lsa_url:
-    //       'https://www.lsa.umich.edu/cg/cg_detail.aspx?content=2260EECS485001&termArray=f_19_2260',
-    //     description:
-    //       'Concepts surrounding web systems, applications, and internet scale distributed systems. Topics covered include client/server protocols, security, information retrieval and search engines, scalable data processing, and fault tolerant systems. The course has substantial projects involving development of web applications and web systems.',
-    //     credit: 4,
-    //     id: 22349,
-    //     section: '002',
-    //     instructor_name: 'Andrew Whitehouse DeOrio',
-    //     instructor_score: 4.5,
-    //     instructor_url:
-    //       'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=1765657',
-    //     en_prereq:
-    //       'Major in EECS OR Informatics; and EECS 281 or EECS 382 (completed with a minimum grade of C or better); OR graduate standing. (Prerequisites enforced at registration.).',
-    //     ad_prereq: null,
-    //     status: 'Closed',
-    //     seats: 0,
-    //     restricted_seat: null,
-    //     waitlist: 59,
-    //     time: 'TuTh 2:30PM - 4:00PM',
-    //     location: '1571 GGBL',
-    //   },
-    //   {
-    //     code: 'EECS 485',
-    //     name: 'Web Systems',
-    //     term: 'FA 2019',
-    //     lsa_url:
-    //       'https://www.lsa.umich.edu/cg/cg_detail.aspx?content=2260EECS485001&termArray=f_19_2260',
-    //     description:
-    //       'Concepts surrounding web systems, applications, and internet scale distributed systems. Topics covered include client/server protocols, security, information retrieval and search engines, scalable data processing, and fault tolerant systems. The course has substantial projects involving development of web applications and web systems.',
-    //     credit: 4,
-    //     id: 23064,
-    //     section: '001',
-    //     instructor_name: 'Andrew Whitehouse DeOrio',
-    //     instructor_score: 4.5,
-    //     instructor_url:
-    //       'http://www.ratemyprofessors.com/ShowRatings.jsp?tid=1765657',
-    //     en_prereq:
-    //       'Major in EECS OR Informatics; and EECS 281 or EECS 382 (completed with a minimum grade of C or better); OR graduate standing. (Prerequisites enforced at registration.).',
-    //     ad_prereq: null,
-    //     status: 'Closed',
-    //     seats: 0,
-    //     restricted_seat: null,
-    //     waitlist: 75,
-    //     time: 'TuTh 10:30AM - 12:00PM',
-    //     location: '1109 FXB',
-    //   },
-    //   {
-    //     code: 'EECS 485',
-    //     name: 'Web Systems',
-    //     term: 'FA 2019',
-    //     lsa_url:
-    //       'https://www.lsa.umich.edu/cg/cg_detail.aspx?content=2260EECS485001&termArray=f_19_2260',
-    //     description:
-    //       'Concepts surrounding web systems, applications, and internet scale distributed systems. Topics covered include client/server protocols, security, information retrieval and search engines, scalable data processing, and fault tolerant systems. The course has substantial projects involving development of web applications and web systems.',
-    //     credit: 4,
-    //     id: 31805,
-    //     section: '003',
-    //     instructor_name: 'Raed Almomani',
-    //     instructor_score: null,
-    //     instructor_url: null,
-    //     en_prereq:
-    //       'Major in EECS OR Informatics; and EECS 281 or EECS 382 (completed with a minimum grade of C or better); OR graduate standing. (Prerequisites enforced at registration.).',
-    //     ad_prereq: null,
-    //     status: 'Closed',
-    //     seats: 0,
-    //     restricted_seat: null,
-    //     waitlist: 64,
-    //     time: 'TuTh 6:00PM - 7:30PM',
-    //     location: '1109 FXB',
-    //   },
-    // ];
-    // if (courseName === 'EECS 485')
-    //   setTimeout(
-    //     () =>
-    //       this.setState({
-    //         courseInfo: test,
-    //         loading: false,
-    //         courseExists: true,
-    //       }),
-    //     2000
-    //   );
-    // else
-    //   this.setState({
-    //     courseInfo: null,
-    //     loading: false,
-    //     courseExists: courseExists,
-    //   });
   }
 
   componentDidUpdate(prevProps) {
