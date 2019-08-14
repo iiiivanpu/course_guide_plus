@@ -135,13 +135,24 @@ class CourseInfoPage extends React.Component {
     courseName: null,
     courseInfo: null,
     loading: true,
+    courseExists: false,
   };
 
   fetchCourse() {
     if (!this.state.loading) this.setState({ loading: true });
+    const { courseName } = this.props;
+    const json = require('../../constants/all_course_name_list.json');
+    const courseExists = json.name_list.includes(courseName);
+    if (!courseExists) {
+      this.setState({
+        courseExists: courseExists,
+        loading: false,
+        courseInfo: null,
+      });
+      return;
+    }
 
-    // const { courseName } = this.props;
-    // const [type, number] = this.props.courseName.split(' ');
+    // const [type, number] = courseName.split(' ');
     // const requestUrl = `http://django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com/api/classes/${type}/${number}`;
     // const xhr = new XMLHttpRequest();
     // xhr.onreadystatechange = e => {
@@ -152,10 +163,12 @@ class CourseInfoPage extends React.Component {
     //     try {
     //       const res = JSON.parse(xhr.responseText);
     //       if (res)
-    //         this.setState(
-    //           { courseName: courseName, courseInfo: res, loading: false },
-    //           () => console.log(this.state.courseInfo)
-    //         );
+    //         this.setState({
+    //           courseName: courseName,
+    //           courseInfo: res,
+    //           loading: false,
+    //           courseExists: courseExists,
+    //         });
     //     } catch (e) {
     //       console.warn(e);
     //     }
@@ -165,9 +178,11 @@ class CourseInfoPage extends React.Component {
     // };
     // xhr.timeout = 3000; // timeout in 3 seconds
     // xhr.ontimeout = e => {
-    //   this.setState({ courseInfo: null, loading: false }, () =>
-    //     console.log('Failed to fetch the course information')
-    //   );
+    //   this.setState({
+    //     courseInfo: null,
+    //     loading: false,
+    //     courseExists: courseExists,
+    //   });
     // };
     // xhr.open('GET', requestUrl);
     // xhr.send();
@@ -248,8 +263,22 @@ class CourseInfoPage extends React.Component {
         location: '1109 FXB',
       },
     ];
-
-    setTimeout(() => this.setState({ courseInfo: test, loading: false }), 2000);
+    if (courseName === 'EECS 485')
+      setTimeout(
+        () =>
+          this.setState({
+            courseInfo: test,
+            loading: false,
+            courseExists: true,
+          }),
+        2000
+      );
+    else
+      this.setState({
+        courseInfo: null,
+        loading: false,
+        courseExists: courseExists,
+      });
   }
 
   componentDidUpdate(prevProps) {
@@ -263,128 +292,49 @@ class CourseInfoPage extends React.Component {
 
   renderClass() {
     let classElements = [];
-    const allSections = this.state.courseInfo;
-    // Sort the array of sections by section id
-    allSections.sort((a, b) => (a.section > b.section ? 1 : -1));
-    console.log(allSections);
-    if (allSections.length === 0) {
+    if (!this.state.courseExists)
       classElements.push(
-        <ClassInfoContainer key="classInfo-empty">
-          <div>
-            There is no data for the selected class right now. Please try again
-            later!
-          </div>
+        <ClassInfoContainer key="classInfo-nonExisting">
+          The course requested does not exist in our database, please check
+          again!
         </ClassInfoContainer>
       );
-    } else {
-      const currentClass = allSections[0];
-      const title = `${currentClass.code} - ${currentClass.name}`;
-      const department = currentClass.code.split(' ')[0];
-      const enforcedPrereq = currentClass.en_prereq;
-      const classUrl = currentClass.lsa_url;
-      const { credit, term, description } = currentClass;
-
-      if (this.props.isMobile) {
-        // Currently on a mobile device
-        // Render class info
+    else {
+      const allSections = this.state.courseInfo;
+      if (allSections === null || allSections.length === 0) {
         classElements.push(
-          <ClassInfoContainer key="classInfo-mobile">
-            <ClassTitle>{title}</ClassTitle>
-            <InfoContainerMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>Department:</ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>
-                  {department}
-                </ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>Credit:</ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>
-                  {credit}
-                </ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>Term:</ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>{term}</ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>
-                  Enforced Prerequisites:
-                </ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>
-                  {enforcedPrereq}
-                </ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>Description:</ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>
-                  {description}
-                </ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-              <ClassInfoItemMobile>
-                <ClassInfoItemBoldMobile>Course Link:</ClassInfoItemBoldMobile>
-                <ClassInfoItemRegularMobile>
-                  <StyledLink href={classUrl}>{classUrl}</StyledLink>
-                </ClassInfoItemRegularMobile>
-              </ClassInfoItemMobile>
-            </InfoContainerMobile>
+          <ClassInfoContainer key="classInfo-empty">
+            There is no data for the selected class right now. Please try again
+            later!
           </ClassInfoContainer>
         );
-        // Render section info
-        allSections.forEach((currentSection, index) => {
-          console.log(currentSection, index);
-          const sectionId = currentSection.id;
-          const instructorName = currentSection.instructor_name;
-          const instructorScore = currentSection.instructor_score;
-          const instructorUrl = currentSection.instructor_url;
-          const {
-            location,
-            seats,
-            section,
-            status,
-            term,
-            time,
-            waitlist,
-          } = currentSection;
-          console.log(section);
+      } else {
+        // Sort the array of sections by section id
+        allSections.sort((a, b) => (a.section > b.section ? 1 : -1));
+        const currentClass = allSections[0];
+        const title = `${currentClass.code} - ${currentClass.name}`;
+        const department = currentClass.code.split(' ')[0];
+        const enforcedPrereq = currentClass.en_prereq;
+        const classUrl = currentClass.lsa_url;
+        const { credit, term, description } = currentClass;
+
+        if (this.props.isMobile) {
+          // Currently on a mobile device
+          // Render class info
           classElements.push(
-            <SectionInfoCointainerMobile key={sectionId}>
-              <SectionTitle>{`Section - ${section}`}</SectionTitle>
+            <ClassInfoContainer key="classInfo-mobile">
+              <ClassTitle>{title}</ClassTitle>
               <InfoContainerMobile>
                 <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Section Id:</ClassInfoItemBoldMobile>
+                  <ClassInfoItemBoldMobile>Department:</ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    {sectionId}
+                    {department}
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
                 <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>
-                    Instructor Name:
-                  </ClassInfoItemBoldMobile>
+                  <ClassInfoItemBoldMobile>Credit:</ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    {instructorName}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>
-                    RateMyProfessor Score:
-                  </ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {instructorScore || 'N/A'}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>
-                    RateMyProfessor Link:
-                  </ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {instructorUrl ? (
-                      <StyledLink href={instructorUrl}>
-                        {instructorUrl}
-                      </StyledLink>
-                    ) : (
-                      'N/A'
-                    )}
+                    {credit}
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
                 <ClassInfoItemMobile>
@@ -394,148 +344,80 @@ class CourseInfoPage extends React.Component {
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
                 <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Status:</ClassInfoItemBoldMobile>
+                  <ClassInfoItemBoldMobile>
+                    Enforced Prerequisites:
+                  </ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    {status}
+                    {enforcedPrereq}
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
                 <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Seats:</ClassInfoItemBoldMobile>
+                  <ClassInfoItemBoldMobile>
+                    Description:
+                  </ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    {seats}
+                    {description}
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
                 <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Location:</ClassInfoItemBoldMobile>
+                  <ClassInfoItemBoldMobile>
+                    Course Link:
+                  </ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    {location}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Time:</ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {time}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Waitlist:</ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {waitlist}
+                    <StyledLink href={classUrl}>{classUrl}</StyledLink>
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
               </InfoContainerMobile>
-            </SectionInfoCointainerMobile>
+            </ClassInfoContainer>
           );
-        });
-      } else {
-        // Currently on a pc
-        // Render class info
-        classElements.push(
-          <ClassInfoContainer key="classInfo-pc">
-            <ClassTitle>{title}</ClassTitle>
-            <InfoContainer>
-              <ClassInfoLeft>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Department: </ClassInfoItemBold>
-                  <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
-                </ClassInfoItem>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Credit: </ClassInfoItemBold>
-                  <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
-                </ClassInfoItem>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Term: </ClassInfoItemBold>
-                  <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-                </ClassInfoItem>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Enforced Prerequisites:</ClassInfoItemBold>
-                  <ClassInfoItemRegular>{enforcedPrereq}</ClassInfoItemRegular>
-                </ClassInfoItem>
-              </ClassInfoLeft>
-              <ClassInfoRight>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Description: </ClassInfoItemBold>
-                  <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
-                </ClassInfoItem>
-                <ClassInfoItem>
-                  <ClassInfoItemBold>Course Link: </ClassInfoItemBold>
-                  <ClassInfoItemRegular>
-                    <StyledLink href={classUrl}>{classUrl}</StyledLink>
-                  </ClassInfoItemRegular>
-                </ClassInfoItem>
-              </ClassInfoRight>
-            </InfoContainer>
-          </ClassInfoContainer>
-        );
-        // Render section info
-        allSections.forEach((currentSection, index) => {
-          console.log(currentSection, index);
-          const sectionId = currentSection.id;
-          const instructorName = currentSection.instructor_name;
-          const instructorScore = currentSection.instructor_score;
-          const instructorUrl = currentSection.instructor_url;
-          const {
-            location,
-            seats,
-            section,
-            status,
-            term,
-            time,
-            waitlist,
-          } = currentSection;
-          console.log(section);
-          classElements.push(
-            <SectionInfoCointainer key={sectionId}>
-              <SectionTitle>{`Section - ${section}`}</SectionTitle>
-              <InfoContainer>
-                <ClassInfoLeft>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Section Id:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{sectionId}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Status:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{status}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Seats:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{seats}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Waitlist:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{waitlist}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Location:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{location}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Time:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{time}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                </ClassInfoLeft>
-                <ClassInfoRight>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Term:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Instructor Name:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>
+          // Render section info
+          allSections.forEach((currentSection, index) => {
+            const sectionId = currentSection.id;
+            const instructorName = currentSection.instructor_name;
+            const instructorScore = currentSection.instructor_score;
+            const instructorUrl = currentSection.instructor_url;
+            const {
+              location,
+              seats,
+              section,
+              status,
+              term,
+              time,
+              waitlist,
+            } = currentSection;
+            classElements.push(
+              <SectionInfoCointainerMobile key={sectionId}>
+                <SectionTitle>{`Section - ${section}`}</SectionTitle>
+                <InfoContainerMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>
+                      Section Id:
+                    </ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {sectionId}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>
+                      Instructor Name:
+                    </ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
                       {instructorName}
-                    </ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>
                       RateMyProfessor Score:
-                    </ClassInfoItemBold>
-                    <ClassInfoItemRegular>
+                    </ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
                       {instructorScore || 'N/A'}
-                    </ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>RateMyProfessor Link:</ClassInfoItemBold>
-                    <ClassInfoItemRegular>
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>
+                      RateMyProfessor Link:
+                    </ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
                       {instructorUrl ? (
                         <StyledLink href={instructorUrl}>
                           {instructorUrl}
@@ -543,13 +425,176 @@ class CourseInfoPage extends React.Component {
                       ) : (
                         'N/A'
                       )}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Term:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {term}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Status:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {status}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Seats:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {seats}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Location:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {location}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Time:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {time}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemBoldMobile>Waitlist:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemRegularMobile>
+                      {waitlist}
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
+                </InfoContainerMobile>
+              </SectionInfoCointainerMobile>
+            );
+          });
+        } else {
+          // Currently on a pc
+          // Render class info
+          classElements.push(
+            <ClassInfoContainer key="classInfo-pc">
+              <ClassTitle>{title}</ClassTitle>
+              <InfoContainer>
+                <ClassInfoLeft>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>Department: </ClassInfoItemBold>
+                    <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
+                  </ClassInfoItem>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>Credit: </ClassInfoItemBold>
+                    <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
+                  </ClassInfoItem>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>Term: </ClassInfoItemBold>
+                    <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
+                  </ClassInfoItem>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>
+                      Enforced Prerequisites:
+                    </ClassInfoItemBold>
+                    <ClassInfoItemRegular>
+                      {enforcedPrereq}
+                    </ClassInfoItemRegular>
+                  </ClassInfoItem>
+                </ClassInfoLeft>
+                <ClassInfoRight>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>Description: </ClassInfoItemBold>
+                    <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
+                  </ClassInfoItem>
+                  <ClassInfoItem>
+                    <ClassInfoItemBold>Course Link: </ClassInfoItemBold>
+                    <ClassInfoItemRegular>
+                      <StyledLink href={classUrl}>{classUrl}</StyledLink>
                     </ClassInfoItemRegular>
                   </ClassInfoItem>
                 </ClassInfoRight>
               </InfoContainer>
-            </SectionInfoCointainer>
+            </ClassInfoContainer>
           );
-        });
+          // Render section info
+          allSections.forEach((currentSection, index) => {
+            const sectionId = currentSection.id;
+            const instructorName = currentSection.instructor_name;
+            const instructorScore = currentSection.instructor_score;
+            const instructorUrl = currentSection.instructor_url;
+            const {
+              location,
+              seats,
+              section,
+              status,
+              term,
+              time,
+              waitlist,
+            } = currentSection;
+            classElements.push(
+              <SectionInfoCointainer key={sectionId}>
+                <SectionTitle>{`Section - ${section}`}</SectionTitle>
+                <InfoContainer>
+                  <ClassInfoLeft>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Section Id:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{sectionId}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Status:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{status}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Seats:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{seats}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Waitlist:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{waitlist}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Location:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{location}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Time:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{time}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                  </ClassInfoLeft>
+                  <ClassInfoRight>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Term:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>Instructor Name:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>
+                        {instructorName}
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>
+                        RateMyProfessor Score:
+                      </ClassInfoItemBold>
+                      <ClassInfoItemRegular>
+                        {instructorScore || 'N/A'}
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    <ClassInfoItem>
+                      <ClassInfoItemBold>
+                        RateMyProfessor Link:
+                      </ClassInfoItemBold>
+                      <ClassInfoItemRegular>
+                        {instructorUrl ? (
+                          <StyledLink href={instructorUrl}>
+                            {instructorUrl}
+                          </StyledLink>
+                        ) : (
+                          'N/A'
+                        )}
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                  </ClassInfoRight>
+                </InfoContainer>
+              </SectionInfoCointainer>
+            );
+          });
+        }
       }
     }
 

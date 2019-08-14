@@ -14,11 +14,22 @@ export const updateIsMobile = isMobile => ({
   isMobile,
 });
 
+let firstCall = true;
+
+const initialUrlSync = state => {
+  firstCall = false;
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get('type');
+  const number = params.get('number');
+  type && number
+    ? (state.selectedClass = `${type} ${number}`)
+    : (state.selectedClass = null);
+  return state;
+};
+
 const mainUiReducer = (state = INITIAL_STATE, action) => {
-  // let newState;
   switch (action.type) {
     case 'SELECT_A_CLASS':
-      console.log('select a class: ', action.className);
       return {
         ...state,
         selectedClass: action.className,
@@ -33,4 +44,9 @@ const mainUiReducer = (state = INITIAL_STATE, action) => {
   }
 };
 
-export default mainUiReducer;
+const globalReducer = (state = INITIAL_STATE, action) => {
+  if (!firstCall) return mainUiReducer(state, action);
+  return initialUrlSync(state);
+};
+
+export default globalReducer;

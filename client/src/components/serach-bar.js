@@ -47,7 +47,6 @@ const newAllCourseNames = json.name_list.sort().reduce((memo, name) => {
   memo.push({ id: name });
   return memo;
 }, []);
-console.log(newAllCourseNames);
 
 class SearchBar extends React.Component {
   render() {
@@ -61,7 +60,6 @@ class SearchBar extends React.Component {
           },
         }}
         onChange={event => {
-          console.log(event);
           if (event.type === 'select') this.props.selectAClass(event.option.id);
           else this.props.selectAClass(null);
         }}

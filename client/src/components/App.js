@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import MainPage from './pages/main-page';
-import { updateIsMobile } from '../reducers/mainUi';
+import { updateIsMobile, selectAClass } from '../reducers/mainUi';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import UrlSync from './url-sync';
 
 class App extends Component {
   componentWillMount() {
@@ -30,30 +31,38 @@ class App extends Component {
     );
   };
 
-  // render() {
-  //   return (
-  //     <Router>
-  //       <div>
-  //         <ul>
-  //           <li>
-  //             <Link to="/course_guide_plus">Home</Link>
-  //           </li>
-  //           <li>
-  //             <Link to="/course_guide_plus/about">About</Link>
-  //           </li>
-  //         </ul>
-  //         <hr />
-
-  //         <Route exact path="/course_guide_plus" component={MainPage} />
-  //         <Route path="/course_guide_plus/about" component={this.About} />
-  //       </div>
-  //     </Router>
-  //   );
-  // }
-
   render() {
-    return <MainPage />;
+    return (
+      <React.Fragment>
+        <UrlSync />
+        <Router>
+          <div>
+            <ul>
+              <li>
+                <Link
+                  to="/course_guide_plus"
+                  onClick={() => this.props.selectAClass(null)}
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link to="/course_guide_plus/about">About</Link>
+              </li>
+            </ul>
+            <hr />
+
+            <Route exact path="/course_guide_plus" component={MainPage} />
+            <Route path="/course_guide_plus/about" component={this.About} />
+          </div>
+        </Router>
+      </React.Fragment>
+    );
   }
+
+  // render() {
+  //   return <MainPage />;
+  // }
 }
 
 // export default App;
@@ -61,6 +70,9 @@ class App extends Component {
 const mapDispatchToProps = dispatch => ({
   updateIsMobile: isMobile => {
     dispatch(updateIsMobile(isMobile));
+  },
+  selectAClass: className => {
+    dispatch(selectAClass(className));
   },
 });
 
