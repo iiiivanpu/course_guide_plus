@@ -25,7 +25,7 @@ SECRET_KEY = '2a@$r&b2+2498gnghp7#5bxa&c5afe@+lkwod@on(*ze!gl0-y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com', '127.0.0.1']
+ALLOWED_HOSTS = ['django-env.bvi52yefg9.us-west-2.elasticbeanstalk.com', '127.0.0.1', 'course-guide-plus-api.ml', 'api.course-guide-plus.ml']
 
 
 # Application definition
