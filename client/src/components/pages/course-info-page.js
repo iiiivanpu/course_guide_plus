@@ -11,6 +11,7 @@ const WelcomePageContainer = styled('div', props => ({
   display: 'flex',
   flexDirection: 'column',
   margin: props.$isMobile ? '5px' : '30px 30px 0 30px',
+  // minWidth: props.$isMobile ? '300px' : '1150px',
 }));
 const StyledLink = styled('a', props => ({
   color: '#2c3e6d',
@@ -39,6 +40,7 @@ const InfoContainerMobile = styled('div', {
   border: '1px solid grey',
   borderRadius: '10px',
   borderSpacing: '3px',
+  tableLayout: 'fixed',
   width: '100%',
 });
 const ClassInfoContainer = styled('div', {
@@ -51,20 +53,29 @@ const ClassInfoLeft = styled('div', {
   borderSpacing: '5px 10px',
 });
 const ClassInfoRight = styled('div', {
-  flexGrow: '1',
+  flexGrow: '2',
   flexBasis: '0',
   display: 'table',
-  borderSpacing: '5px 10px',
+  borderSpacing: '10px 10px',
+  tableLayout: 'fixed',
 });
 const ClassInfoItem = styled('div', {
   display: 'table-row',
+  // display: 'flex',
+  // flexDirection: 'column',
 });
 const ClassInfoItemBold = styled('div', {
   fontWeight: 'bold',
   display: 'table-cell',
+  flexGrow: '1',
+  flexBasis: '0',
+  width: '2%',
+  margin: '5px',
 });
 const ClassInfoItemRegular = styled('div', {
-  display: 'table-cell',
+  // display: 'table-cell',
+  flexGrow: '2',
+  flexBasis: '0',
 });
 const ClassInfoItemMobile = styled('div', {
   display: 'flow',
@@ -76,6 +87,9 @@ const ClassInfoItemBoldMobile = styled('div', {
 });
 const ClassInfoItemRegularMobile = styled('div', {
   marginTop: '2px',
+  // Wrap long links
+  overflowWrap: 'break-word',
+  wordWrap: 'break-word',
 });
 const ClassTitle = styled('div', {
   color: 'white',
@@ -92,6 +106,7 @@ const ClassTitle = styled('div', {
 });
 const SpinnerContainer = styled('div', {
   marginTop: '50px',
+  marginLeft: '50px',
 });
 const SectionTitle = styled('div', {
   backgroundColor: '#FFCB05',
@@ -108,6 +123,8 @@ const SectionTitle = styled('div', {
 const SectionInfoCointainer = styled('div', {
   marginBottom: '30px',
   width: '70%',
+  // A trial-and-error value that fixes the section info to prevent collapsing
+  minWidth: '898px',
 });
 const SectionInfoCointainerMobile = styled('div', {
   marginBottom: '30px',

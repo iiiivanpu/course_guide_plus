@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
-  // selectedClass: 'EECS 485',
-  selectedClass: null,
+  selectedClass: 'EECS 485',
+  // selectedClass: null,
   isMobile: null,
 };
 
