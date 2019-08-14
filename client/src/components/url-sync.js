@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class UrlSync extends React.Component {
   componentDidUpdate() {
     const { courseName } = this.props;
-    let newUrl = '/course_guide_plus';
+    let newUrl = '/';
     if (courseName) {
       const [type, number] = courseName.split(' ');
       const params = new window.URLSearchParams();
