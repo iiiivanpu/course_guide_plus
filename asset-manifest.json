@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.js": "//iiiivanpu.github.io/course_guide_plus/static/js/main.c95a5b16.chunk.js",
-    "main.js.map": "//iiiivanpu.github.io/course_guide_plus/static/js/main.c95a5b16.chunk.js.map",
-    "runtime~main.js": "//iiiivanpu.github.io/course_guide_plus/static/js/runtime~main.0c3c37f1.js",
-    "runtime~main.js.map": "//iiiivanpu.github.io/course_guide_plus/static/js/runtime~main.0c3c37f1.js.map",
-    "static/js/2.ccec33f3.chunk.js": "//iiiivanpu.github.io/course_guide_plus/static/js/2.ccec33f3.chunk.js",
-    "static/js/2.ccec33f3.chunk.js.map": "//iiiivanpu.github.io/course_guide_plus/static/js/2.ccec33f3.chunk.js.map",
-    "index.html": "//iiiivanpu.github.io/course_guide_plus/index.html",
-    "precache-manifest.353f4db35640260a0dd49ef24f6734e8.js": "//iiiivanpu.github.io/course_guide_plus/precache-manifest.353f4db35640260a0dd49ef24f6734e8.js",
-    "service-worker.js": "//iiiivanpu.github.io/course_guide_plus/service-worker.js",
-    "static/media/logo.png": "//iiiivanpu.github.io/course_guide_plus/static/media/logo.314b5011.png"
+    "main.js": "/static/js/main.68ea6c9b.chunk.js",
+    "main.js.map": "/static/js/main.68ea6c9b.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/js/2.ccec33f3.chunk.js": "/static/js/2.ccec33f3.chunk.js",
+    "static/js/2.ccec33f3.chunk.js.map": "/static/js/2.ccec33f3.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.a2bbeb3042268269c708bb0d99432317.js": "/precache-manifest.a2bbeb3042268269c708bb0d99432317.js",
+    "service-worker.js": "/service-worker.js",
+    "static/media/logo.png": "/static/media/logo.314b5011.png"
   }
 }
