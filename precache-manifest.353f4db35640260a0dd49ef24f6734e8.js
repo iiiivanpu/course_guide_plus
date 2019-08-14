@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "988c60409c12597b5a16bfd839012f0f",
+    "revision": "ab9921ba3c827fd6a1c08ddc83307ae2",
     "url": "//iiiivanpu.github.io/course_guide_plus/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "//iiiivanpu.github.io/course_guide_plus/static/js/2.ccec33f3.chunk.js"
   },
   {
-    "revision": "035c4c12c13e47c46414",
-    "url": "//iiiivanpu.github.io/course_guide_plus/static/js/main.ececf457.chunk.js"
+    "revision": "9f969516fa6be649d59b",
+    "url": "//iiiivanpu.github.io/course_guide_plus/static/js/main.c95a5b16.chunk.js"
   },
   {
     "revision": "24dc9623fa01084f2285",
