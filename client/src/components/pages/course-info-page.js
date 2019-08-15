@@ -5,6 +5,7 @@ import SearchBar from '../serach-bar';
 import { Spinner } from 'baseui/spinner';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
+import RMPLogo from '../../static/RMP.jpg';
 
 const WelcomePageContainer = styled('div', props => ({
   height: '20vh',
@@ -59,26 +60,20 @@ const ClassInfoLeft = styled('div', {
 const ClassInfoRight = styled('div', {
   flexGrow: '1',
   flexBasis: '0',
-  display: 'table',
-  borderSpacing: '10px 10px',
-  tableLayout: 'fixed',
+  position: 'relative',
 });
 const ClassInfoItem = styled('div', {
-  // display: 'table-row',
   display: 'flex',
 });
 const ClassInfoItemBold = styled('div', {
   fontWeight: 'bold',
-  // display: 'table-cell',
-  // flexGrow: '1',
-  // flexBasis: '0',
-  // width: '2%',
-  // margin: '5px',
   float: 'left',
+  marginRight: '5px',
 });
 const ClassInfoItemRegular = styled('div', {
   // flexGrow: '2',
   // flexBasis: '0',
+  margin: '5px 5px',
 });
 const ClassInfoItemMobile = styled('div', {
   display: 'flow',
@@ -132,13 +127,33 @@ const SectionInfoCointainer = styled('div', {
 const SectionInfoCointainerMobile = styled('div', {
   marginBottom: '30px',
 });
-const ClosedSection = styled('div', {
-  color: 'red',
-  textTransform: 'uppercase',
+const StatusContainer = styled('span', props => ({
+  color: props.$closed ? 'red' : 'green',
+}));
+const RMPContainer = styled('div', {
+  display: 'flex',
+  position: 'absolute',
+  top: '-30px',
+  right: '0',
+  overflow: 'hidden',
 });
-const OpenSection = styled('div', {
-  color: 'green',
-  textTransform: 'uppercase',
+const RMPLogoContainer = styled('img', props => ({
+  width: '175px',
+  height: '100px',
+  cursor: props.$clickable ? 'pointer' : 'not-allowed',
+  // A hacky way to make the white backround of the img transparent
+  mixBlendMode: 'multiply',
+}));
+const RMPScore = styled('a', {
+  fontSize: '30px',
+  color: '#28A9E02',
+  display: 'flex',
+  alignItems: 'center',
+});
+const DayTimeContainer = styled('div', {
+  position: 'absolute',
+  bottom: '0',
+  right: '0',
 });
 
 class CourseInfoPage extends React.Component {
@@ -148,14 +163,6 @@ class CourseInfoPage extends React.Component {
     loading: true,
     courseExists: false,
   };
-
-  renderStatus(status) {
-    return status === 'Closed' ? (
-      <ClosedSection>{status}</ClosedSection>
-    ) : (
-      <OpenSection>{status}</OpenSection>
-    );
-  }
 
   fetchCourse() {
     if (!this.state.loading) this.setState({ loading: true });
@@ -214,6 +221,19 @@ class CourseInfoPage extends React.Component {
 
   componentDidMount() {
     this.fetchCourse();
+  }
+
+  // A helper function that renders each class info item
+  // key: string is the left title, value: string is the right description
+  renderClassInfoItem(key, value) {
+    return (
+      <ClassInfoItem>
+        <ClassInfoItemRegular>
+          <ClassInfoItemBold>{`${key}:`}</ClassInfoItemBold>
+          {value}
+        </ClassInfoItemRegular>
+      </ClassInfoItem>
+    );
   }
 
   renderClass() {
@@ -290,7 +310,12 @@ class CourseInfoPage extends React.Component {
                     Course Link:
                   </ClassInfoItemBoldMobile>
                   <ClassInfoItemRegularMobile>
-                    <StyledLink href={classUrl}>{classUrl}</StyledLink>
+                    <StyledLink
+                      href={classUrl}
+                      title={`Link to LSA Course Guide for course ${title}`}
+                    >
+                      {classUrl}
+                    </StyledLink>
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
               </InfoContainerMobile>
@@ -320,7 +345,10 @@ class CourseInfoPage extends React.Component {
                       Instructor:
                     </ClassInfoItemBoldMobile>
                     <ClassInfoItemRegularMobile>
-                      <StyledLink href={instructorUrl}>
+                      <StyledLink
+                        href={instructorUrl}
+                        title={`Link to RateMyProfessors.com for instructor ${instructorName}`}
+                      >
                         {instructorName}
                       </StyledLink>
                     </ClassInfoItemRegularMobile>
@@ -339,7 +367,10 @@ class CourseInfoPage extends React.Component {
                     </ClassInfoItemBoldMobile>
                     <ClassInfoItemRegularMobile>
                       {instructorUrl ? (
-                        <StyledLink href={instructorUrl}>
+                        <StyledLink
+                          href={instructorUrl}
+                          title={`Link to RateMyProfessors.com for instructor ${instructorName}`}
+                        >
                           {instructorUrl}
                         </StyledLink>
                       ) : (
@@ -357,9 +388,9 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemBoldMobile>
                       Enroll Status:
                     </ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
+                    {/* <ClassInfoItemRegularMobile>
                       {this.renderStatus(status)}
-                    </ClassInfoItemRegularMobile>
+                    </ClassInfoItemRegularMobile> */}
                   </ClassInfoItemMobile>
                   <ClassInfoItemMobile>
                     <ClassInfoItemBoldMobile>Seats:</ClassInfoItemBoldMobile>
@@ -397,38 +428,25 @@ class CourseInfoPage extends React.Component {
               <ClassTitle>{title}</ClassTitle>
               <InfoContainer>
                 <ClassInfoLeft>
-                  <ClassInfoItem>
-                    <ClassInfoItemRegular>
-                      <ClassInfoItemBold>Department: </ClassInfoItemBold>
-                      {department}
-                    </ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Credit: </ClassInfoItemBold>
-                    <ClassInfoItemRegular>{credit}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Term: </ClassInfoItemBold>
-                    <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemRegular>
-                      <ClassInfoItemBold>
-                        Enforced Prerequisites:
-                      </ClassInfoItemBold>
-                      {enforcedPrereq}
-                    </ClassInfoItemRegular>
-                  </ClassInfoItem>
+                  {this.renderClassInfoItem('Department', department)}
+                  {this.renderClassInfoItem('Credit', credit)}
+                  {this.renderClassInfoItem('Term', term)}
+                  {this.renderClassInfoItem(
+                    'Enforced Prerequisites',
+                    enforcedPrereq
+                  )}
                 </ClassInfoLeft>
                 <ClassInfoRight>
+                  {this.renderClassInfoItem('Description', description)}
                   <ClassInfoItem>
-                    <ClassInfoItemBold>Description: </ClassInfoItemBold>
-                    <ClassInfoItemRegular>{description}</ClassInfoItemRegular>
-                  </ClassInfoItem>
-                  <ClassInfoItem>
-                    <ClassInfoItemBold>Course Link: </ClassInfoItemBold>
                     <ClassInfoItemRegular>
-                      <StyledLink href={classUrl}>{classUrl}</StyledLink>
+                      <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
+                      <StyledLink
+                        href={classUrl}
+                        title={`Link to LSA Course Guide for course ${title}`}
+                      >
+                        {classUrl}
+                      </StyledLink>
                     </ClassInfoItemRegular>
                   </ClassInfoItem>
                 </ClassInfoRight>
@@ -446,7 +464,6 @@ class CourseInfoPage extends React.Component {
               seats,
               section,
               status,
-              term,
               time,
               waitlist,
             } = currentSection;
@@ -456,63 +473,60 @@ class CourseInfoPage extends React.Component {
                 <InfoContainer>
                   <ClassInfoLeft>
                     <ClassInfoItem>
-                      <ClassInfoItemBold>Enroll Status:</ClassInfoItemBold>
                       <ClassInfoItemRegular>
-                        {this.renderStatus(status)}
-                      </ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Seats:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{seats}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Waitlist:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{waitlist}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Location:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{location}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Time:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{time}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                  </ClassInfoLeft>
-                  <ClassInfoRight>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Term:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Instructor:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>
-                        <StyledLink href={instructorUrl}>
+                        <ClassInfoItemBold>Instructor:</ClassInfoItemBold>
+                        <StyledLink
+                          href={instructorUrl}
+                          title={
+                            instructorUrl
+                              ? `Link to RateMyProfessor.com for instructor ${instructorName}`
+                              : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
+                          }
+                        >
                           {instructorName}
                         </StyledLink>
                       </ClassInfoItemRegular>
                     </ClassInfoItem>
                     <ClassInfoItem>
-                      <ClassInfoItemBold>
-                        RateMyProfessor Score:
-                      </ClassInfoItemBold>
                       <ClassInfoItemRegular>
+                        <ClassInfoItemBold>Enroll Status:</ClassInfoItemBold>
+                        <StatusContainer $closed={status === 'Closed'}>
+                          {status}
+                        </StatusContainer>
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                    {this.renderClassInfoItem('Seats', seats)}
+                    {this.renderClassInfoItem('Waitlist', waitlist)}
+                    {this.renderClassInfoItem('Location', location)}
+                  </ClassInfoLeft>
+                  <ClassInfoRight>
+                    <RMPContainer>
+                      <a href={instructorUrl}>
+                        <RMPLogoContainer
+                          src={RMPLogo}
+                          alt="Rate my professor logo"
+                          $clickable={instructorUrl}
+                          title={
+                            instructorScore
+                              ? `Link to RateMyProfessors.com for instructor ${instructorName}`
+                              : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
+                          }
+                        />
+                      </a>
+                      <RMPScore
+                        href={instructorUrl}
+                        title={
+                          instructorScore
+                            ? `Link to RateMyProfessors.com for instructor ${instructorName}`
+                            : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
+                        }
+                      >
                         {instructorScore || 'N/A'}
-                      </ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>
-                        RateMyProfessor Link:
-                      </ClassInfoItemBold>
-                      <ClassInfoItemRegular>
-                        {instructorUrl ? (
-                          <StyledLink href={instructorUrl}>
-                            {instructorUrl}
-                          </StyledLink>
-                        ) : (
-                          'N/A'
-                        )}
-                      </ClassInfoItemRegular>
-                    </ClassInfoItem>
+                      </RMPScore>
+                    </RMPContainer>
+                    <DayTimeContainer>
+                      {this.renderClassInfoItem('Day/Time', time)}
+                    </DayTimeContainer>
                   </ClassInfoRight>
                 </InfoContainer>
               </SectionInfoCointainer>
