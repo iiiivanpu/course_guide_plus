@@ -10,7 +10,7 @@ const WelcomePageContainer = styled('div', props => ({
   height: '20vh',
   display: 'flex',
   flexDirection: 'column',
-  margin: props.$isMobile ? '5px' : '30px 30px 0 30px',
+  margin: props.$isMobile ? '5px' : '30px',
 }));
 const StyledLink = styled('a', props => ({
   color: '#2c3e6d',
@@ -44,34 +44,41 @@ const InfoContainerMobile = styled('div', {
 });
 const ClassInfoContainer = styled('div', {
   marginBottom: '30px',
+  // A trial-and-error value that fixes the section info to prevent collapsing
+  minWidth: '900px',
+});
+const ClassInfoContainerMobile = styled('div', {
+  marginBottom: '30px',
 });
 const ClassInfoLeft = styled('div', {
   flexGrow: '1',
   flexBasis: '0',
-  display: 'table',
-  borderSpacing: '5px 10px',
+  // display: 'table',
+  // borderSpacing: '5px 10px',
 });
 const ClassInfoRight = styled('div', {
-  flexGrow: '2',
+  flexGrow: '1',
   flexBasis: '0',
   display: 'table',
   borderSpacing: '10px 10px',
   tableLayout: 'fixed',
 });
 const ClassInfoItem = styled('div', {
-  display: 'table-row',
+  // display: 'table-row',
+  display: 'flex',
 });
 const ClassInfoItemBold = styled('div', {
   fontWeight: 'bold',
-  display: 'table-cell',
-  flexGrow: '1',
-  flexBasis: '0',
-  width: '2%',
-  margin: '5px',
+  // display: 'table-cell',
+  // flexGrow: '1',
+  // flexBasis: '0',
+  // width: '2%',
+  // margin: '5px',
+  float: 'left',
 });
 const ClassInfoItemRegular = styled('div', {
-  flexGrow: '2',
-  flexBasis: '0',
+  // flexGrow: '2',
+  // flexBasis: '0',
 });
 const ClassInfoItemMobile = styled('div', {
   display: 'flow',
@@ -120,10 +127,18 @@ const SectionInfoCointainer = styled('div', {
   marginBottom: '30px',
   width: '70%',
   // A trial-and-error value that fixes the section info to prevent collapsing
-  minWidth: '898px',
+  minWidth: '900px',
 });
 const SectionInfoCointainerMobile = styled('div', {
   marginBottom: '30px',
+});
+const ClosedSection = styled('div', {
+  color: 'red',
+  textTransform: 'uppercase',
+});
+const OpenSection = styled('div', {
+  color: 'green',
+  textTransform: 'uppercase',
 });
 
 class CourseInfoPage extends React.Component {
@@ -133,6 +148,14 @@ class CourseInfoPage extends React.Component {
     loading: true,
     courseExists: false,
   };
+
+  renderStatus(status) {
+    return status === 'Closed' ? (
+      <ClosedSection>{status}</ClosedSection>
+    ) : (
+      <OpenSection>{status}</OpenSection>
+    );
+  }
 
   fetchCourse() {
     if (!this.state.loading) this.setState({ loading: true });
@@ -225,7 +248,7 @@ class CourseInfoPage extends React.Component {
           // Currently on a mobile device
           // Render class info
           classElements.push(
-            <ClassInfoContainer key="classInfo-mobile">
+            <ClassInfoContainerMobile key="classInfo-mobile">
               <ClassTitle>{title}</ClassTitle>
               <InfoContainerMobile>
                 <ClassInfoItemMobile>
@@ -271,7 +294,7 @@ class CourseInfoPage extends React.Component {
                   </ClassInfoItemRegularMobile>
                 </ClassInfoItemMobile>
               </InfoContainerMobile>
-            </ClassInfoContainer>
+            </ClassInfoContainerMobile>
           );
           // Render section info
           allSections.forEach((currentSection, index) => {
@@ -290,22 +313,16 @@ class CourseInfoPage extends React.Component {
             } = currentSection;
             classElements.push(
               <SectionInfoCointainerMobile key={sectionId}>
-                <SectionTitle>{`Section - ${section}`}</SectionTitle>
+                <SectionTitle>{`Section ${section} - ${sectionId}`}</SectionTitle>
                 <InfoContainerMobile>
                   <ClassInfoItemMobile>
                     <ClassInfoItemBoldMobile>
-                      Section Id:
+                      Instructor:
                     </ClassInfoItemBoldMobile>
                     <ClassInfoItemRegularMobile>
-                      {sectionId}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>
-                      Instructor Name:
-                    </ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {instructorName}
+                      <StyledLink href={instructorUrl}>
+                        {instructorName}
+                      </StyledLink>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
                   <ClassInfoItemMobile>
@@ -337,9 +354,11 @@ class CourseInfoPage extends React.Component {
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
                   <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Status:</ClassInfoItemBoldMobile>
+                    <ClassInfoItemBoldMobile>
+                      Enroll Status:
+                    </ClassInfoItemBoldMobile>
                     <ClassInfoItemRegularMobile>
-                      {status}
+                      {this.renderStatus(status)}
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
                   <ClassInfoItemMobile>
@@ -379,8 +398,10 @@ class CourseInfoPage extends React.Component {
               <InfoContainer>
                 <ClassInfoLeft>
                   <ClassInfoItem>
-                    <ClassInfoItemBold>Department: </ClassInfoItemBold>
-                    <ClassInfoItemRegular>{department}</ClassInfoItemRegular>
+                    <ClassInfoItemRegular>
+                      <ClassInfoItemBold>Department: </ClassInfoItemBold>
+                      {department}
+                    </ClassInfoItemRegular>
                   </ClassInfoItem>
                   <ClassInfoItem>
                     <ClassInfoItemBold>Credit: </ClassInfoItemBold>
@@ -391,10 +412,10 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
                   </ClassInfoItem>
                   <ClassInfoItem>
-                    <ClassInfoItemBold>
-                      Enforced Prerequisites:
-                    </ClassInfoItemBold>
                     <ClassInfoItemRegular>
+                      <ClassInfoItemBold>
+                        Enforced Prerequisites:
+                      </ClassInfoItemBold>
                       {enforcedPrereq}
                     </ClassInfoItemRegular>
                   </ClassInfoItem>
@@ -431,16 +452,14 @@ class CourseInfoPage extends React.Component {
             } = currentSection;
             classElements.push(
               <SectionInfoCointainer key={sectionId}>
-                <SectionTitle>{`Section - ${section}`}</SectionTitle>
+                <SectionTitle>{`Section ${section} - ${sectionId}`}</SectionTitle>
                 <InfoContainer>
                   <ClassInfoLeft>
                     <ClassInfoItem>
-                      <ClassInfoItemBold>Section Id:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{sectionId}</ClassInfoItemRegular>
-                    </ClassInfoItem>
-                    <ClassInfoItem>
-                      <ClassInfoItemBold>Status:</ClassInfoItemBold>
-                      <ClassInfoItemRegular>{status}</ClassInfoItemRegular>
+                      <ClassInfoItemBold>Enroll Status:</ClassInfoItemBold>
+                      <ClassInfoItemRegular>
+                        {this.renderStatus(status)}
+                      </ClassInfoItemRegular>
                     </ClassInfoItem>
                     <ClassInfoItem>
                       <ClassInfoItemBold>Seats:</ClassInfoItemBold>
@@ -465,9 +484,11 @@ class CourseInfoPage extends React.Component {
                       <ClassInfoItemRegular>{term}</ClassInfoItemRegular>
                     </ClassInfoItem>
                     <ClassInfoItem>
-                      <ClassInfoItemBold>Instructor Name:</ClassInfoItemBold>
+                      <ClassInfoItemBold>Instructor:</ClassInfoItemBold>
                       <ClassInfoItemRegular>
-                        {instructorName}
+                        <StyledLink href={instructorUrl}>
+                          {instructorName}
+                        </StyledLink>
                       </ClassInfoItemRegular>
                     </ClassInfoItem>
                     <ClassInfoItem>
