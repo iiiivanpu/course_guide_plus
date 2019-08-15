@@ -19,7 +19,7 @@ class App extends Component {
   }
 
   handleWindowSizeChange = () => {
-    const isMobile = window.innerWidth <= 700;
+    const isMobile = window.innerWidth <= 800;
     this.props.updateIsMobile(isMobile);
   };
 

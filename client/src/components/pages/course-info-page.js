@@ -146,7 +146,7 @@ const RMPLogoContainer = styled('img', props => ({
 }));
 const RMPScore = styled('a', {
   fontSize: '30px',
-  color: '#28A9E02',
+  color: '#28A9E0',
   display: 'flex',
   alignItems: 'center',
 });
