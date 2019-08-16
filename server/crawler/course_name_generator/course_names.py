@@ -45,7 +45,7 @@ def parse_page(html):
 if __name__ == '__main__':
     get_names()
     print(name_set)
-    json_file = {"name_list": list(name_set)}
+    json_file = name_set
     with open('../../../client/src/constants/all_course_name_list.json', 'w') as outfile:
         json.dump(json_file, outfile)
     print("Number of classes:", len(name_set))
