@@ -1,7 +1,7 @@
 import { styled } from 'baseui';
 import React from 'react';
 import Logo from '../../static/logo.png';
-import SearchBar from '../serach-bar';
+import SearchBar from '../search-bar';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
 

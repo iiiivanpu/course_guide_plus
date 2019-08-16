@@ -43,29 +43,30 @@ const VirtualList = React.forwardRef((props, ref) => {
   );
 });
 const json = require('../constants/all_course_name_list.json');
-const newAllCourseNames = json.name_list.sort().reduce((memo, name) => {
-  memo.push({ id: name });
+const allCourseCodes = Object.keys(json).reduce((memo, course) => {
+  memo.push({ id: `${course} - ${json[course]}`, courseCode: course });
   return memo;
 }, []);
-
+console.log(allCourseCodes);
 class SearchBar extends React.Component {
   render() {
     return (
       <StatefulSelect
-        options={newAllCourseNames}
+        options={allCourseCodes}
         labelKey="id"
+        valueKey="course"
         overrides={{
           Dropdown: {
             component: VirtualList,
           },
         }}
         onChange={event => {
-          if (event.type === 'select') this.props.selectAClass(event.option.id);
+          if (event.type === 'select')
+            this.props.selectAClass(event.option.courseCode);
           else this.props.selectAClass(null);
         }}
         placeholder={'Choose a class...'}
         type={TYPE.search}
-        maxDropdownHeight="200px"
         initialState={{
           value: this.props.courseName ? [{ id: this.props.courseName }] : null,
         }}

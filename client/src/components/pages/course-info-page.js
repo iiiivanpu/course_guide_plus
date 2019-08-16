@@ -1,7 +1,7 @@
 import { styled } from 'baseui';
 import React from 'react';
 import Logo from '../../static/logo.png';
-import SearchBar from '../serach-bar';
+import SearchBar from '../search-bar';
 import { Spinner } from 'baseui/spinner';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
@@ -168,7 +168,7 @@ class CourseInfoPage extends React.Component {
     if (!this.state.loading) this.setState({ loading: true });
     const { courseName } = this.props;
     const json = require('../../constants/all_course_name_list.json');
-    const courseExists = json.name_list.includes(courseName);
+    const courseExists = Object.keys(json).includes(courseName);
     if (!courseExists) {
       this.setState({
         courseExists: courseExists,
