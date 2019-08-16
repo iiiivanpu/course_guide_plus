@@ -4,7 +4,7 @@ import json
 import urllib.request
 from urllib.request import Request, urlopen
 
-name_set = set()
+name_set = {}
 count = 0
 
 def get_names():
@@ -24,10 +24,14 @@ def parse_page(html):
     for i in range(len(em)):
         # print(em.eq(i))
         course_name = em.eq(i).find('.col-sm-12 > a > font').text()
-        course_name = course_name.split()[:2]
+        course_name = course_name.split()
+        course_code = course_name[:2]
+        course_name = course_name[3:]
         count += 1
+        print(" ".join(course_code))
         print(" ".join(course_name))
-        name_set.add(" ".join(course_name))
+        # name_set.add(" ".join(course_name))
+        name_set[" ".join(course_code)] = " ".join(course_name)
     print(count)
     next_url = doc.find('#contentMain_hlnkNextBtm')
     if next_url:
@@ -42,6 +46,6 @@ if __name__ == '__main__':
     get_names()
     print(name_set)
     json_file = {"name_list": list(name_set)}
-    with open('../../../shared/all_course_name_list.json', 'w') as outfile:
+    with open('../../../client/src/constants/all_course_name_list.json', 'w') as outfile:
         json.dump(json_file, outfile)
     print("Number of classes:", len(name_set))
