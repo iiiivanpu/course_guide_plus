@@ -7,6 +7,7 @@ import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 import { connect } from 'react-redux';
 import { selectAClass } from '../reducers/mainUi';
 
+// Needed for the selector component to display many options
 const ListItem = withStyle(StyledDropdownListItem, {
   paddingTop: 0,
   paddingBottom: 0,
@@ -42,33 +43,42 @@ const VirtualList = React.forwardRef((props, ref) => {
     </Container>
   );
 });
-const json = require('../constants/all_course_name_list.json');
-const allCourseCodes = Object.keys(json).reduce((memo, course) => {
-  memo.push({ id: `${course} - ${json[course]}`, courseCode: course });
-  return memo;
-}, []);
-console.log(allCourseCodes);
+
+// Get all the course name and set up the options for the selector component
+const courseCodeToCourseMap = require('../constants/all_course_name_list.json');
+const allSelectOptions = Object.keys(courseCodeToCourseMap).reduce(
+  (memo, courseCode) => {
+    memo.push({
+      id: `${courseCode} - ${courseCodeToCourseMap[courseCode]}`,
+      courseCode: courseCode,
+    });
+    return memo;
+  },
+  []
+);
 class SearchBar extends React.Component {
   render() {
+    const { courseName, selectAClass } = this.props;
     return (
       <StatefulSelect
-        options={allCourseCodes}
+        options={allSelectOptions}
         labelKey="id"
-        valueKey="course"
+        valueKey="courseCode"
         overrides={{
           Dropdown: {
             component: VirtualList,
           },
         }}
         onChange={event => {
-          if (event.type === 'select')
-            this.props.selectAClass(event.option.courseCode);
-          else this.props.selectAClass(null);
+          if (event.type === 'select') selectAClass(event.option.courseCode);
+          else selectAClass(null);
         }}
         placeholder={'Choose a class...'}
         type={TYPE.search}
         initialState={{
-          value: this.props.courseName ? [{ id: this.props.courseName }] : null,
+          value: courseName
+            ? [{ id: `${courseName} - ${courseCodeToCourseMap[courseName]}` }]
+            : null,
         }}
       />
     );
