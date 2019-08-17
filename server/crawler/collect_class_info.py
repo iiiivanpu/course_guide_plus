@@ -102,13 +102,12 @@ def detail_page(url, save):
     lec_lst = list(doc.find('.row.clsschedulerow.toppadding_main.bottompadding_main').items())[:len(save['section'])]
     assert len(save['section']) == len(lec_lst)
     print('There are %d sections: ' %len(save['section']))
-    
     for i in range(len(lec_lst)):
         section_page(save.copy(), lec_lst[i], save['section'][i], save['instructor'][i])
         
         
 def section_page(save, sec_save, section_num, instructor_name):
-    score(save, sec_save, section_num, instructor_name)
+    score(save, section_num, instructor_name)
     other_save(save, sec_save)
     sql = 'INSERT INTO courses (code, name, term, lsa_url, description, credit, id, section, instructor_name, instructor_score, instructor_url, en_prereq, ad_prereq, status, seats,restricted_seat, waitlist, time, location) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s) ON DUPLICATE KEY UPDATE code=%s, name=%s, term=%s, lsa_url=%s, description=%s, credit=%s, id=%s, section=%s, instructor_name=%s, instructor_score=%s, instructor_url=%s, en_prereq=%s, ad_prereq=%s, status=%s, seats=%s, restricted_seat=%s, waitlist=%s, time=%s, location=%s'
     val = (
@@ -156,7 +155,7 @@ def section_page(save, sec_save, section_num, instructor_name):
     
 
 
-def score(save, sec_save, section_num, instructor_name):
+def score(save, section_num, instructor_name):
     name = get_name(instructor_name)
     #if no name
     if len(name) == 0:
