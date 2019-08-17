@@ -31,8 +31,12 @@ const VirtualList = React.forwardRef((props, ref) => {
               const { resetMenu, getItemLabel, ...childProps } = children[
                 index
               ].props;
+              const newStyle = {
+                ...style,
+                width: '90%',
+              };
               return (
-                <ListItem key={key} style={style} {...childProps}>
+                <ListItem key={key} style={newStyle} {...childProps}>
                   {childProps.item.id}
                 </ListItem>
               );
