@@ -14,7 +14,7 @@ const WelcomePageContainer = styled('div', props => ({
   margin: props.$isMobile ? '5px' : '30px',
 }));
 const StyledLink = styled('a', props => ({
-  color: '#2c3e6d',
+  color: props.$hasLink ? '#2c3e6d' : 'black',
 }));
 const LogoContainer = styled('img', {
   marginBottom: '30px',
@@ -349,7 +349,12 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemRegularMobile>
                       <StyledLink
                         href={instructorUrl}
-                        title={`Link to RateMyProfessors.com for instructor ${instructorName}`}
+                        title={
+                          instructorScore
+                            ? `Link to RateMyProfessors.com for instructor ${instructorName}`
+                            : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
+                        }
+                        $hasLink={instructorUrl}
                       >
                         {instructorName}
                       </StyledLink>
