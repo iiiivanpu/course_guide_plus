@@ -355,6 +355,10 @@ class CourseInfoPage extends React.Component {
                       </StyledLink>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
+                  {this.renderClassInfoItemMobile(
+                    'RateMyProfessor Score',
+                    instructorScore
+                  )}
                   <ClassInfoItemMobile>
                     <ClassInfoItemRegularMobile>
                       <ClassInfoItemBoldMobile>
