@@ -1,6 +1,6 @@
 # Course Guide Plus
 
-This project is based on LSA Course Guide, but it provides much more features.
+This project is based on LSA Course Guide, but it provides much more information from RateMyProfessor.com
 
 ## Cliend Side
 
@@ -28,10 +28,6 @@ To publish on Github Pages, run:
 yarn deploy
 ```
 
-To access the deployed website, visit:
-https://course-guide-plus.ml/
-
-```
+Visit the deployed website at: https://course-guide-plus.ml/
 
 ## Server Side
-```

@@ -1,7 +1,7 @@
 import { styled } from 'baseui';
 import React from 'react';
 import Logo from '../../static/logo.png';
-import SearchBar from '../serach-bar';
+import SearchBar from '../search-bar';
 import { Spinner } from 'baseui/spinner';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ const WelcomePageContainer = styled('div', props => ({
   margin: props.$isMobile ? '5px' : '30px',
 }));
 const StyledLink = styled('a', props => ({
-  color: '#2c3e6d',
+  color: props.$hasLink ? '#2c3e6d' : 'black',
 }));
 const LogoContainer = styled('img', {
   marginBottom: '30px',
@@ -71,17 +71,16 @@ const ClassInfoItemBold = styled('div', {
   marginRight: '5px',
 });
 const ClassInfoItemRegular = styled('div', {
-  // flexGrow: '2',
-  // flexBasis: '0',
   margin: '5px 5px',
 });
 const ClassInfoItemMobile = styled('div', {
   display: 'flow',
-  flowDirection: 'column',
   margin: '10px',
 });
 const ClassInfoItemBoldMobile = styled('div', {
-  fontWeight: '700',
+  fontWeight: 'bold',
+  float: 'left',
+  marginRight: '5px',
 });
 const ClassInfoItemRegularMobile = styled('div', {
   marginTop: '2px',
@@ -168,7 +167,7 @@ class CourseInfoPage extends React.Component {
     if (!this.state.loading) this.setState({ loading: true });
     const { courseName } = this.props;
     const json = require('../../constants/all_course_name_list.json');
-    const courseExists = json.name_list.includes(courseName);
+    const courseExists = Object.keys(json).includes(courseName);
     if (!courseExists) {
       this.setState({
         courseExists: courseExists,
@@ -236,24 +235,55 @@ class CourseInfoPage extends React.Component {
     );
   }
 
+  renderClassInfoItemMobile(key, value) {
+    return (
+      <ClassInfoItemMobile>
+        <ClassInfoItemRegularMobile>
+          <ClassInfoItemBoldMobile>{`${key}:`}</ClassInfoItemBoldMobile>
+          {value}
+        </ClassInfoItemRegularMobile>
+      </ClassInfoItemMobile>
+    );
+  }
+
+  // Renders message for courses that are not in the all_course_name_list.json file
+  renderNonExistingMessage() {
+    const message =
+      'The course requested does not exist in our database, please check again!';
+    return this.props.isMobile ? (
+      <ClassInfoContainerMobile key="classInfo-nonExisting">
+        {message}
+      </ClassInfoContainerMobile>
+    ) : (
+      <ClassInfoContainer key="classInfo-nonExisting">
+        {message}
+      </ClassInfoContainer>
+    );
+  }
+
+  // Render message when the course requested in not in our database
+  renderEmptyMessage() {
+    const message =
+      'There is no data for the selected class right now. Please try again later!';
+    return this.props.isMobile ? (
+      <ClassInfoContainerMobile key="classInfo-nonExisting">
+        {message}
+      </ClassInfoContainerMobile>
+    ) : (
+      <ClassInfoContainer key="classInfo-nonExisting">
+        {message}
+      </ClassInfoContainer>
+    );
+  }
+
   renderClass() {
     let classElements = [];
-    if (!this.state.courseExists)
-      classElements.push(
-        <ClassInfoContainer key="classInfo-nonExisting">
-          The course requested does not exist in our database, please check
-          again!
-        </ClassInfoContainer>
-      );
-    else {
+    if (!this.state.courseExists) {
+      classElements.push(this.renderNonExistingMessage());
+    } else {
       const allSections = this.state.courseInfo;
       if (allSections === null || allSections.length === 0) {
-        classElements.push(
-          <ClassInfoContainer key="classInfo-empty">
-            There is no data for the selected class right now. Please try again
-            later!
-          </ClassInfoContainer>
-        );
+        classElements.push(this.renderEmptyMessage());
       } else {
         // Sort the array of sections by section id
         allSections.sort((a, b) => (a.section > b.section ? 1 : -1));
@@ -263,7 +293,6 @@ class CourseInfoPage extends React.Component {
         const enforcedPrereq = currentClass.en_prereq;
         const classUrl = currentClass.lsa_url;
         const { credit, term, description } = currentClass;
-
         if (this.props.isMobile) {
           // Currently on a mobile device
           // Render class info
@@ -271,40 +300,14 @@ class CourseInfoPage extends React.Component {
             <ClassInfoContainerMobile key="classInfo-mobile">
               <ClassTitle>{title}</ClassTitle>
               <InfoContainerMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Department:</ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {department}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Credit:</ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {credit}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>Term:</ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {term}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>
-                    Enforced Prerequisites:
-                  </ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {enforcedPrereq}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
-                <ClassInfoItemMobile>
-                  <ClassInfoItemBoldMobile>
-                    Description:
-                  </ClassInfoItemBoldMobile>
-                  <ClassInfoItemRegularMobile>
-                    {description}
-                  </ClassInfoItemRegularMobile>
-                </ClassInfoItemMobile>
+                {this.renderClassInfoItemMobile('Department', department)}
+                {this.renderClassInfoItemMobile('Credit', credit)}
+                {this.renderClassInfoItemMobile('Term', term)}
+                {this.renderClassInfoItemMobile(
+                  'Enforced Prerequisites',
+                  enforcedPrereq
+                )}
+                {this.renderClassInfoItemMobile('Description', description)}
                 <ClassInfoItemMobile>
                   <ClassInfoItemBoldMobile>
                     Course Link:
@@ -332,7 +335,6 @@ class CourseInfoPage extends React.Component {
               seats,
               section,
               status,
-              term,
               time,
               waitlist,
             } = currentSection;
@@ -347,75 +349,35 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemRegularMobile>
                       <StyledLink
                         href={instructorUrl}
-                        title={`Link to RateMyProfessors.com for instructor ${instructorName}`}
+                        title={
+                          instructorScore
+                            ? `Link to RateMyProfessors.com for instructor ${instructorName}`
+                            : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
+                        }
+                        $hasLink={instructorUrl}
                       >
                         {instructorName}
                       </StyledLink>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
+                  {this.renderClassInfoItemMobile(
+                    'RateMyProfessor Score',
+                    instructorScore
+                  )}
                   <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>
-                      RateMyProfessor Score:
-                    </ClassInfoItemBoldMobile>
                     <ClassInfoItemRegularMobile>
-                      {instructorScore || 'N/A'}
+                      <ClassInfoItemBoldMobile>
+                        Enroll Status:
+                      </ClassInfoItemBoldMobile>
+                      <StatusContainer $closed={status === 'Closed'}>
+                        {status}
+                      </StatusContainer>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>
-                      RateMyProfessor Link:
-                    </ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {instructorUrl ? (
-                        <StyledLink
-                          href={instructorUrl}
-                          title={`Link to RateMyProfessors.com for instructor ${instructorName}`}
-                        >
-                          {instructorUrl}
-                        </StyledLink>
-                      ) : (
-                        'N/A'
-                      )}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Term:</ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {term}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>
-                      Enroll Status:
-                    </ClassInfoItemBoldMobile>
-                    {/* <ClassInfoItemRegularMobile>
-                      {this.renderStatus(status)}
-                    </ClassInfoItemRegularMobile> */}
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Seats:</ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {seats}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Location:</ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {location}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Time:</ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {time}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
-                  <ClassInfoItemMobile>
-                    <ClassInfoItemBoldMobile>Waitlist:</ClassInfoItemBoldMobile>
-                    <ClassInfoItemRegularMobile>
-                      {waitlist}
-                    </ClassInfoItemRegularMobile>
-                  </ClassInfoItemMobile>
+                  {this.renderClassInfoItemMobile('Open Seats', seats)}
+                  {this.renderClassInfoItemMobile('Waitlist', waitlist)}
+                  {this.renderClassInfoItemMobile('Location', location)}
+                  {this.renderClassInfoItemMobile('Day/Time', time)}
                 </InfoContainerMobile>
               </SectionInfoCointainerMobile>
             );
