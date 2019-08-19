@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+ #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 # Created on 2019-08-17 10:09:31
 # Project: Couses_info
@@ -19,7 +19,7 @@ mycursor = mydb.cursor()
 
 class Handler(BaseHandler):
     
-    @every(minutes=24 * 60)
+    @every(minutes=12 * 60)
     def on_start(self):
         with open('/mnt/c/Users/iconv/g_drive/cs/course_guide_plus/client/src/constants/all_course_name_list.json') as f:
             data = json.load(f)
@@ -31,6 +31,7 @@ class Handler(BaseHandler):
             course = course.split()
             self.crawl(url+course[0]+'&catalog='+course[1], callback=self.index_page)
 
+    @config(age=12 * 60 * 60)
     def index_page(self, response):
         save = {}
         em = response.doc('.row.ClassRow.ClassHyperlink').eq(0)
@@ -57,6 +58,7 @@ class Handler(BaseHandler):
         print(save)
         self.crawl(url, callback=self.info_page, save=save, connect_timeout=600, timeout=600)
     
+    @config(age=12 * 60 * 60)
     def info_page(self, response):
         save = response.save
 
@@ -86,6 +88,7 @@ class Handler(BaseHandler):
             this_save['name'] = self.get_name(this_save['instructor'][i]) 
             self.crawl("https://google.com/search?q=" + this_save['course_code'].replace(" ", "+") + '+' + str(i), callback=self.timeout_page, save=this_save, connect_timeout=600, timeout=600)
                         
+    @config(age=12 * 60 * 60)
     def timeout_page(self, response):
         this_save = response.save
         name = this_save['name']
@@ -183,6 +186,7 @@ class Handler(BaseHandler):
         location = sec_save.find('.col-md-4 .loc_link').text()
         save['location'] = location
 
+    @config(age=12 * 60 * 60)
     def detail_page(self, response):
         print(response.save)
         save = response.save
