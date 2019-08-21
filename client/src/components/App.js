@@ -36,15 +36,15 @@ const linkStyle = {
   textDecoration: 'none',
   color: 'white',
 };
-const StyledAnchor = styled('a', {
+const StyledAnchor = styled('div', {
   ':hover': {
     color: '#FFCB05',
   },
 });
-const SocialShareContainer = styled('a', {
+const SocialShareContainer = styled('div', {
   position: 'absolute',
-  bottom: '10px',
-  right: '50px',
+  bottom: '30px',
+  right: '40px',
   display: 'flex',
   alignItems: 'center',
 });
@@ -56,15 +56,15 @@ const SocialShareMessage = styled('div', {
   userSelect: 'none',
 });
 const footerStyle = {
-  backgroundColor: '#00274C',
+  backgroundColor: '#003283',
   fontSize: '20px',
   color: 'white',
-  padding: '20px',
+  padding: '10px',
   position: 'fixed',
   left: '0',
   right: '0',
   bottom: '0',
-  height: '12px',
+  height: '1px',
   width: '100%',
 };
 const phantomStyle = {
@@ -156,10 +156,8 @@ class App extends Component {
             <SocialShareMessage>Share to Others</SocialShareMessage>
             <InlineShareButtons
               config={{
-                alignment: 'right', // alignment of buttons (left, center, right)
                 color: 'social', // set the color of buttons (social, white)
                 enabled: true, // show/hide buttons (true, false)
-                font_size: 16, // font size for the buttons
                 labels: 'null', // button labels (cta, counts, null)
                 language: 'en', // which language to use (see LANGUAGES)
                 networks: [
@@ -171,18 +169,14 @@ class App extends Component {
                   'wechat',
                   'twitter',
                 ],
-                padding: 12, // padding within buttons (INTEGER)
-                radius: 20, // the corner radius on each button (INTEGER)
+                padding: 8, // padding within buttons (INTEGER)
+                radius: 200, // the corner radius on each button (INTEGER)
                 show_total: false,
                 size: 30, // the size of each button (INTEGER)
-
-                // OPTIONAL PARAMETERS
                 url: 'https://course-guide-plus.ml/', // (defaults to current url)
-                //image: 'https://bit.ly/2CMhCMC', // (defaults to og:image or twitter:image)
                 description:
                   'Course Guide Plus is an easier and faster way to find courses at the Unviersity of Michigan ', // (defaults to og:description or twitter:description)
                 title: 'Course Guide Plus', // (defaults to og:title or twitter:title)
-                //username: 'custom twitter handle', // (only for twitter sharing)
               }}
             />
           </SocialShareContainer>

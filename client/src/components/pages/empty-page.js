@@ -1,6 +1,6 @@
 import { styled } from 'baseui';
 import React from 'react';
-import Logo from '../../static/logo.png';
+import Logo from '../../static/logo_white.png';
 import SearchBar from '../search-bar';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
@@ -23,9 +23,6 @@ const EmptyPageContainer = styled('div', {
   flexDirection: 'column',
   // Offset for a more center look
   marginTop: '-400px',
-});
-const test = styled('div', {
-  color: 'white',
 });
 const LogoContainer = styled('img', {
   marginBottom: '10px',
@@ -59,18 +56,16 @@ class EmptyPage extends React.Component {
     return (
       <MainContainer $isMobile={this.props.isMobile}>
         <EmptyPageContainer>
-          <test>
-            <LogoContainer
-              src={Logo}
-              alt="website logo"
-              onClick={() => this.props.selectAClass(null)}
-              draggable="false"
-              height={70}
-            />
-            <SloganContainer>
-              Easier and Faster Way to Find your Courses
-            </SloganContainer>
-          </test>
+          <LogoContainer
+            src={Logo}
+            alt="website logo"
+            onClick={() => this.props.selectAClass(null)}
+            draggable="false"
+            height={70}
+          />
+          <SloganContainer>
+            Easier and Faster Way to Find your Courses
+          </SloganContainer>
           <SearchBarContainer>
             <SearchBar />
           </SearchBarContainer>

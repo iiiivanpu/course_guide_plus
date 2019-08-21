@@ -37,7 +37,7 @@ const VirtualList = React.forwardRef((props, ref) => {
               };
               return (
                 <ListItem key={key} style={newStyle} {...childProps}>
-                  {childProps.item.id}
+                  {childProps.item.label}
                 </ListItem>
               );
             }}
@@ -53,8 +53,8 @@ const courseCodeToCourseMap = require('../constants/all_course_name_list.json');
 const allSelectOptions = Object.keys(courseCodeToCourseMap).reduce(
   (memo, courseCode) => {
     memo.push({
-      id: `${courseCode} - ${courseCodeToCourseMap[courseCode]}`,
-      courseCode: courseCode,
+      id: courseCode,
+      label: `${courseCode} - ${courseCodeToCourseMap[courseCode]}`,
     });
     return memo;
   },
@@ -65,6 +65,7 @@ class SearchBar extends React.Component {
     const { courseName, selectAClass } = this.props;
     return (
       <StatefulSelect
+        creatable
         options={allSelectOptions}
         labelKey="id"
         valueKey="courseCode"
@@ -72,18 +73,23 @@ class SearchBar extends React.Component {
           Dropdown: {
             component: VirtualList,
           },
+          ControlContainer: {
+            borderRadius: '100px',
+          },
         }}
         onChange={event => {
-          if (event.type === 'select') selectAClass(event.option.courseCode);
+          console.log(event);
+          if (event.type === 'select') selectAClass(event.option.id);
           else selectAClass(null);
         }}
-        placeholder={'Type Course Code or Course Name Here...'}
+        placeholder={
+          courseName
+            ? courseCodeToCourseMap[courseName]
+              ? `${courseName} - ${courseCodeToCourseMap[courseName]}`
+              : courseName
+            : 'Type Course Code or Course Name Here...'
+        }
         type={TYPE.search}
-        initialState={{
-          value: courseName
-            ? [{ id: `${courseName} - ${courseCodeToCourseMap[courseName]}` }]
-            : null,
-        }}
       />
     );
   }

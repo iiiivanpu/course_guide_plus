@@ -1,6 +1,6 @@
 import { styled } from 'baseui';
 import React from 'react';
-import Logo from '../../static/logo.png';
+import Logo from '../../static/logo_black.png';
 import SearchBar from '../search-bar';
 import { Spinner } from 'baseui/spinner';
 import { selectAClass } from '../../reducers/mainUi';
@@ -58,8 +58,6 @@ const ClassInfoContainerMobile = styled('div', {
 const ClassInfoLeft = styled('div', {
   flexGrow: '1',
   flexBasis: '0',
-  // display: 'table',
-  // borderSpacing: '5px 10px',
 });
 const ClassInfoRight = styled('div', {
   flexGrow: '1',
