@@ -14,7 +14,9 @@ const ListItem = withStyle(StyledDropdownListItem, {
   display: 'flex',
   alignItems: 'center',
 });
-const Container = withStyle(StyledList, { height: '250px' });
+const Container = withStyle(StyledList, {
+  height: '250px',
+});
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
@@ -72,9 +74,12 @@ class SearchBar extends React.Component {
         overrides={{
           Dropdown: {
             component: VirtualList,
+            style: {},
           },
           ControlContainer: {
-            borderRadius: '100px',
+            style: {
+              borderRadius: '100px 100px 100px 100px',
+            },
           },
         }}
         onChange={event => {
