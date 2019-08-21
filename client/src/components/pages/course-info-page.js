@@ -14,7 +14,8 @@ const CourseInfoPageContainer = styled('div', props => ({
   height: '100%',
   backgroundColor: 'white',
   padding: '30px',
-  top: '0',
+  top: '-10px',
+  position: 'relative',
 }));
 const StyledLink = styled('a', props => ({
   color: props.$hasLink ? '#2c3e6d' : 'black',
