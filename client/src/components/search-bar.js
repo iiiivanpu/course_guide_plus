@@ -31,15 +31,12 @@ const VirtualList = React.forwardRef((props, ref) => {
             rowCount={props.children.length || 0}
             rowHeight={36}
             rowRenderer={({ index, key, style }) => {
+              console.log(index, key);
               const { resetMenu, getItemLabel, ...childProps } = children[
                 index
               ].props;
-              const newStyle = {
-                ...style,
-                width: '90%',
-              };
               return (
-                <ListItem key={key} style={newStyle} {...childProps}>
+                <ListItem key={key} style={style} {...childProps}>
                   {childProps.item.label || childProps.item.id}
                 </ListItem>
               );
@@ -77,8 +74,8 @@ class SearchBar extends React.Component {
       <StatefulSelect
         creatable
         options={allSelectOptions}
-        labelKey="id"
-        valueKey="courseCode"
+        labelKey="label"
+        valueKey="id"
         overrides={{
           Dropdown: {
             component: VirtualList,
@@ -103,10 +100,6 @@ class SearchBar extends React.Component {
               : courseName
             : 'Type Course Code or Course Name Here...'
         }
-        value={{
-          id: courseName,
-          label: `${courseName} - ${courseCodeToCourseMap[courseName]}`,
-        }}
         type={TYPE.search}
       />
     );
