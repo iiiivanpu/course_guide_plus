@@ -43,8 +43,8 @@ const StyledAnchor = styled('a', {
 });
 const SocialShareContainer = styled('a', {
   position: 'absolute',
-  bottom: '0',
-  right: '0',
+  bottom: '10px',
+  right: '15px',
   display: 'flex',
   alignItems: 'center',
 });
@@ -144,7 +144,7 @@ class App extends Component {
                 'twitter',
               ],
               padding: 12, // padding within buttons (INTEGER)
-              radius: 4, // the corner radius on each button (INTEGER)
+              radius: 50, // the corner radius on each button (INTEGER)
               show_total: false,
               size: 40, // the size of each button (INTEGER)
 
