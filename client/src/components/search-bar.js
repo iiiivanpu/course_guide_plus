@@ -31,7 +31,6 @@ const VirtualList = React.forwardRef((props, ref) => {
             rowCount={props.children.length || 0}
             rowHeight={36}
             rowRenderer={({ index, key, style }) => {
-              console.log(index, key);
               const { resetMenu, getItemLabel, ...childProps } = children[
                 index
               ].props;
@@ -63,19 +62,12 @@ const allSelectOptions = Object.keys(courseCodeToCourseMap).reduce(
 class SearchBar extends React.Component {
   render() {
     const { courseName, selectAClass } = this.props;
-    console.log(
-      courseName
-        ? courseCodeToCourseMap[courseName]
-          ? `${courseName} - ${courseCodeToCourseMap[courseName]}`
-          : courseName
-        : 'Type Course Code or Course Name Here...'
-    );
     return (
       <StatefulSelect
         creatable
         options={allSelectOptions}
-        labelKey="label"
-        valueKey="id"
+        labelKey="id"
+        valueKey="label"
         overrides={{
           Dropdown: {
             component: VirtualList,
