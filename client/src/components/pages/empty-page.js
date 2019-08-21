@@ -5,27 +5,24 @@ import SearchBar from '../search-bar';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
 
-// const WelcomePageContainer = styled('div', {
-// height: '55vh',
-// display: 'flex',
-// justifyContent: 'center',
-// alignItems: 'center',
-// flexDirection: 'column',
-// });
-const MainContainer = styled('div', props => ({
-  display: 'block',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  width: props.$isMobile ? 'auto' : '40%',
-}));
+const MainContainer = styled('div', {
+  position: 'absolute',
+  left: '0',
+  // Offset to avoid covering up topbar
+  height: '90%',
+  top: '10%',
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 const WelcomePageContainer = styled('div', {
-  maxWidth: '1000px',
-  minWidth: '300px',
-  height: '55vh',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
+  // Offset a bit for a better look
+  marginTop: '-400px',
 });
 const LogoContainer = styled('img', {
   marginBottom: '30px',
@@ -35,13 +32,17 @@ const LogoContainer = styled('img', {
 });
 const SearchBarContainer = styled('div', {
   position: 'aboluste',
-  width: '80%',
+  width: '90%',
+  userSelect: 'none',
 });
 
 class EmptyPage extends React.Component {
   render() {
     return (
-      <MainContainer $isMobile={this.props.isMobile}>
+      <MainContainer
+        $isMobile={this.props.isMobile}
+        onClick={() => console.log('test')}
+      >
         <WelcomePageContainer>
           <LogoContainer
             src={Logo}
