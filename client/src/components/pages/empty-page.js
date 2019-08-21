@@ -1,6 +1,6 @@
 import { styled } from 'baseui';
 import React from 'react';
-import Logo from '../../static/logo_white.png';
+import Logo from '../../static/logo.png';
 import SearchBar from '../search-bar';
 import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
@@ -22,11 +22,11 @@ const EmptyPageContainer = styled('div', {
   alignItems: 'center',
   flexDirection: 'column',
   // Offset for a more center look
-  marginTop: '-400px',
+  marginTop: '-320px',
 });
 const LogoContainer = styled('img', {
   marginBottom: '10px',
-  width: '60%',
+  width: '65%',
   userSelect: 'none',
   cursor: 'pointer',
 
@@ -37,7 +37,7 @@ const LogoContainer = styled('img', {
 const SloganContainer = styled('div', {
   userSelect: 'none',
   color: 'white',
-  fontSize: '25px',
+  fontSize: '20px',
   marginBottom: '30px',
   textAlign: 'center',
 
@@ -47,7 +47,7 @@ const SloganContainer = styled('div', {
 });
 const SearchBarContainer = styled('div', {
   position: 'aboluste',
-  width: '90%',
+  width: '100%',
   userSelect: 'none',
 });
 

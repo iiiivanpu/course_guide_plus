@@ -1,6 +1,6 @@
 import { styled } from 'baseui';
 import React from 'react';
-import Logo from '../../static/logo_black.png';
+import Logo from '../../static/logo.png';
 import SearchBar from '../search-bar';
 import { Spinner } from 'baseui/spinner';
 import { selectAClass } from '../../reducers/mainUi';
@@ -10,25 +10,37 @@ import RMPLogo from '../../static/RMP.jpg';
 const CourseInfoPageContainer = styled('div', props => ({
   display: 'flex',
   flexDirection: 'column',
-  margin: props.$isMobile ? '5px' : '0',
+  // margin: props.$isMobile ? '5px' : '0',
+  margin: '0 15px 15px 15px',
+  borderRadius: '20px',
   height: '100%',
-  backgroundColor: 'white',
   padding: '30px',
-  top: '-10px',
+  top: '5px',
   position: 'relative',
+  backgroundColor: 'rgba(255, 255, 255, 0.9)',
 }));
 const StyledLink = styled('a', props => ({
   color: props.$hasLink ? '#2c3e6d' : 'black',
 }));
+const LogoSearchBarContainer = styled('div', {
+  top: '-70px',
+  left: '30px',
+  position: 'absolute',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  overflow: 'none',
+  // Fix the search bar to prevent change to width
+  maxWidth: '638px',
+});
 const LogoContainer = styled('img', {
-  marginBottom: '30px',
   width: '30%',
   userSelect: 'none',
   cursor: 'pointer',
 });
 const SearchBarContainer = styled('div', {
+  margin: '10px 0 0 10px',
   width: '60%',
-  marginBottom: '30px',
 });
 const InfoContainer = styled('div', {
   display: 'flex',
@@ -506,21 +518,24 @@ class CourseInfoPage extends React.Component {
   render() {
     return (
       <CourseInfoPageContainer $isMobile={this.props.isMobile}>
-        <LogoContainer
-          src={Logo}
-          alt="website logo"
-          onClick={() => this.props.selectAClass(null)}
-          draggable="false"
-        />
-        <SearchBarContainer>
-          <SearchBar />
-          {this.state.loading && (
-            <SpinnerContainer>
-              <Spinner size={70} />
-            </SpinnerContainer>
-          )}
-        </SearchBarContainer>
-        {!this.state.loading && this.renderClass()}
+        <LogoSearchBarContainer>
+          <LogoContainer
+            src={Logo}
+            alt="website logo"
+            onClick={() => this.props.selectAClass(null)}
+            draggable="false"
+          />
+          <SearchBarContainer>
+            <SearchBar />
+          </SearchBarContainer>
+        </LogoSearchBarContainer>
+        {this.state.loading ? (
+          <SpinnerContainer>
+            <Spinner size={70} />
+          </SpinnerContainer>
+        ) : (
+          this.renderClass()
+        )}
       </CourseInfoPageContainer>
     );
   }

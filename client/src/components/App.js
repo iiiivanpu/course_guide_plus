@@ -18,17 +18,18 @@ const BackgroundContainer = styled('div', {
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  minWidth: '200px',
+  minWidth: '1000px',
   fontFamily: 'Arial, Helvetica, sans-serif',
+  overflow: 'auto',
 });
 const TopbarContainer = styled('div', {
   display: 'flex',
   flexDirection: 'row-reverse',
-  marginRight: '25px',
+  margin: '15px 25px 15px 0',
 });
 const TopbarElementContainer = styled('div', {
   color: 'white',
-  fontSize: '25px',
+  fontSize: '22px',
   marginLeft: '50px',
   marginTop: '7px',
 });
@@ -100,6 +101,42 @@ class App extends Component {
     this.props.updateIsMobile(isMobile);
   };
 
+  renderFooter = courseSelected => {
+    console.log(courseSelected);
+    return courseSelected ? null : (
+      <Footer>
+        <SocialShareContainer>
+          <SocialShareMessage>Share to Others</SocialShareMessage>
+          <InlineShareButtons
+            config={{
+              color: 'social', // set the color of buttons (social, white)
+              enabled: true, // show/hide buttons (true, false)
+              labels: 'null', // button labels (cta, counts, null)
+              language: 'en', // which language to use (see LANGUAGES)
+              networks: [
+                // which networks to include (see SHARING NETWORKS)
+                'whatsapp',
+                'linkedin',
+                'messenger',
+                'facebook',
+                'wechat',
+                'twitter',
+              ],
+              padding: 8, // padding within buttons (INTEGER)
+              radius: 200, // the corner radius on each button (INTEGER)
+              show_total: false,
+              size: 30, // the size of each button (INTEGER)
+              url: 'https://course-guide-plus.ml/', // (defaults to current url)
+              description:
+                'Course Guide Plus is an easier and faster way to find courses at the Unviersity of Michigan ', // (defaults to og:description or twitter:description)
+              title: 'Course Guide Plus', // (defaults to og:title or twitter:title)
+            }}
+          />
+        </SocialShareContainer>
+      </Footer>
+    );
+  };
+
   About = () => {
     return (
       <div>
@@ -150,41 +187,15 @@ class App extends Component {
             <Route path="/contact" component={this.Contact} />
           </BackgroundContainer>
         </Router>
-
-        <Footer>
-          <SocialShareContainer>
-            <SocialShareMessage>Share to Others</SocialShareMessage>
-            <InlineShareButtons
-              config={{
-                color: 'social', // set the color of buttons (social, white)
-                enabled: true, // show/hide buttons (true, false)
-                labels: 'null', // button labels (cta, counts, null)
-                language: 'en', // which language to use (see LANGUAGES)
-                networks: [
-                  // which networks to include (see SHARING NETWORKS)
-                  'whatsapp',
-                  'linkedin',
-                  'messenger',
-                  'facebook',
-                  'wechat',
-                  'twitter',
-                ],
-                padding: 8, // padding within buttons (INTEGER)
-                radius: 200, // the corner radius on each button (INTEGER)
-                show_total: false,
-                size: 30, // the size of each button (INTEGER)
-                url: 'https://course-guide-plus.ml/', // (defaults to current url)
-                description:
-                  'Course Guide Plus is an easier and faster way to find courses at the Unviersity of Michigan ', // (defaults to og:description or twitter:description)
-                title: 'Course Guide Plus', // (defaults to og:title or twitter:title)
-              }}
-            />
-          </SocialShareContainer>
-        </Footer>
+        {/* {this.renderFooter(this.props.courseSelected)} */}
       </React.Fragment>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  courseSelected: state.selectedClass !== null,
+});
 
 const mapDispatchToProps = dispatch => ({
   updateIsMobile: isMobile => {
@@ -196,6 +207,6 @@ const mapDispatchToProps = dispatch => ({
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(App);

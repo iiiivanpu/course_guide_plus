@@ -16,6 +16,7 @@ const ListItem = withStyle(StyledDropdownListItem, {
 });
 const Container = withStyle(StyledList, {
   height: '250px',
+  maxWidth: '570px',
 });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
@@ -39,7 +40,7 @@ const VirtualList = React.forwardRef((props, ref) => {
               };
               return (
                 <ListItem key={key} style={newStyle} {...childProps}>
-                  {childProps.item.label}
+                  {childProps.item.label || childProps.item.id}
                 </ListItem>
               );
             }}
@@ -65,6 +66,13 @@ const allSelectOptions = Object.keys(courseCodeToCourseMap).reduce(
 class SearchBar extends React.Component {
   render() {
     const { courseName, selectAClass } = this.props;
+    console.log(
+      courseName
+        ? courseCodeToCourseMap[courseName]
+          ? `${courseName} - ${courseCodeToCourseMap[courseName]}`
+          : courseName
+        : 'Type Course Code or Course Name Here...'
+    );
     return (
       <StatefulSelect
         creatable
@@ -74,16 +82,17 @@ class SearchBar extends React.Component {
         overrides={{
           Dropdown: {
             component: VirtualList,
-            style: {},
           },
           ControlContainer: {
             style: {
-              borderRadius: '100px 100px 100px 100px',
+              borderRadius: '50px',
+              maxWidth: '570px',
+              height: courseName ? '30px' : null,
+              alignItems: 'center',
             },
           },
         }}
         onChange={event => {
-          console.log(event);
           if (event.type === 'select') selectAClass(event.option.id);
           else selectAClass(null);
         }}
@@ -94,6 +103,10 @@ class SearchBar extends React.Component {
               : courseName
             : 'Type Course Code or Course Name Here...'
         }
+        value={{
+          id: courseName,
+          label: `${courseName} - ${courseCodeToCourseMap[courseName]}`,
+        }}
         type={TYPE.search}
       />
     );
