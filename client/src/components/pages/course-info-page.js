@@ -7,11 +7,14 @@ import { selectAClass } from '../../reducers/mainUi';
 import { connect } from 'react-redux';
 import RMPLogo from '../../static/RMP.jpg';
 
-const WelcomePageContainer = styled('div', props => ({
-  height: '20vh',
+const CourseInfoPageContainer = styled('div', props => ({
   display: 'flex',
   flexDirection: 'column',
-  margin: props.$isMobile ? '5px' : '30px',
+  margin: props.$isMobile ? '5px' : '0',
+  height: '100%',
+  backgroundColor: 'white',
+  padding: '30px',
+  top: '0',
 }));
 const StyledLink = styled('a', props => ({
   color: props.$hasLink ? '#2c3e6d' : 'black',
@@ -503,7 +506,7 @@ class CourseInfoPage extends React.Component {
 
   render() {
     return (
-      <WelcomePageContainer $isMobile={this.props.isMobile}>
+      <CourseInfoPageContainer $isMobile={this.props.isMobile}>
         <LogoContainer
           src={Logo}
           alt="website logo"
@@ -519,7 +522,7 @@ class CourseInfoPage extends React.Component {
           )}
         </SearchBarContainer>
         {!this.state.loading && this.renderClass()}
-      </WelcomePageContainer>
+      </CourseInfoPageContainer>
     );
   }
 }

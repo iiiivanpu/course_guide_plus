@@ -77,7 +77,7 @@ class SearchBar extends React.Component {
           if (event.type === 'select') selectAClass(event.option.courseCode);
           else selectAClass(null);
         }}
-        placeholder={'Type Course Code or Course Name Here ...'}
+        placeholder={'Type Course Code or Course Name Here...'}
         type={TYPE.search}
         initialState={{
           value: courseName

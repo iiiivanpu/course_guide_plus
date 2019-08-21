@@ -16,19 +16,37 @@ const MainContainer = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
 });
-const WelcomePageContainer = styled('div', {
+const EmptyPageContainer = styled('div', {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
-  // Offset a bit for a better look
+  // Offset for a more center look
   marginTop: '-400px',
 });
+const test = styled('div', {
+  color: 'white',
+});
 const LogoContainer = styled('img', {
-  marginBottom: '30px',
-  width: '70%',
+  marginBottom: '10px',
+  width: '60%',
   userSelect: 'none',
   cursor: 'pointer',
+
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+});
+const SloganContainer = styled('div', {
+  userSelect: 'none',
+  color: 'white',
+  fontSize: '25px',
+  marginBottom: '30px',
+  textAlign: 'center',
+
+  display: 'block',
+  marginLeft: 'auto',
+  marginRight: 'auto',
 });
 const SearchBarContainer = styled('div', {
   position: 'aboluste',
@@ -39,21 +57,24 @@ const SearchBarContainer = styled('div', {
 class EmptyPage extends React.Component {
   render() {
     return (
-      <MainContainer
-        $isMobile={this.props.isMobile}
-        onClick={() => console.log('test')}
-      >
-        <WelcomePageContainer>
-          <LogoContainer
-            src={Logo}
-            alt="website logo"
-            onClick={() => this.props.selectAClass(null)}
-            draggable="false"
-          />
+      <MainContainer $isMobile={this.props.isMobile}>
+        <EmptyPageContainer>
+          <test>
+            <LogoContainer
+              src={Logo}
+              alt="website logo"
+              onClick={() => this.props.selectAClass(null)}
+              draggable="false"
+              height={70}
+            />
+            <SloganContainer>
+              Easier and Faster Way to Find your Courses
+            </SloganContainer>
+          </test>
           <SearchBarContainer>
             <SearchBar />
           </SearchBarContainer>
-        </WelcomePageContainer>
+        </EmptyPageContainer>
       </MainContainer>
     );
   }
