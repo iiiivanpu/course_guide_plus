@@ -53,6 +53,7 @@ const SocialShareMessage = styled('div', {
   marginRight: '10px',
   fontFamily: 'Arial, Helvetica, sans-serif',
   fontSize: '18px',
+  userSelect: 'none',
 });
 
 class App extends Component {

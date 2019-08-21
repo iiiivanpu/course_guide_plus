@@ -26,7 +26,7 @@ const WelcomePageContainer = styled('div', {
 });
 const LogoContainer = styled('img', {
   marginBottom: '30px',
-  width: '50%',
+  width: '70%',
   userSelect: 'none',
   cursor: 'pointer',
 });
