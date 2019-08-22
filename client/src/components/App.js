@@ -92,20 +92,17 @@ class App extends Component {
     backgroundLoaded: false,
   };
 
-  componentWillMount() {
-    window.addEventListener('resize', this.handleWindowSizeChange);
-  }
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange);
   }
 
   componentDidMount() {
+    window.addEventListener('resize', this.handleWindowSizeChange);
+
     this.handleWindowSizeChange();
   }
 
   handleWindowSizeChange = () => {
-    console.log(window.innerWidth);
     const isMobile = window.innerWidth <= 800;
     this.props.updateIsMobile(isMobile);
   };
@@ -173,12 +170,9 @@ class App extends Component {
             <BackgroundImageOnLoad
               src={backgroundImage}
               onLoadBg={() =>
-                this.setState(
-                  {
-                    backgroundLoaded: true,
-                  },
-                  () => console.log('test')
-                )
+                this.setState({
+                  backgroundLoaded: true,
+                })
               }
               onError={err => console.log('error', err)}
             />

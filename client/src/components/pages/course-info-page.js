@@ -234,7 +234,17 @@ class CourseInfoPage extends React.Component {
 
   componentDidMount() {
     this.fetchCourse();
+    window.onpopstate = this.handlePopState;
   }
+
+  componentWillUnmount() {
+    window.onpopstate = null;
+  }
+
+  handlePopState = event => {
+    event.preventDefault();
+    setTimeout(() => this.props.selectAClass(null), 250);
+  };
 
   // A helper function that renders each class info item
   // key: string is the left title, value: string is the right description

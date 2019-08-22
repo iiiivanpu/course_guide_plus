@@ -13,7 +13,7 @@ class UrlSync extends React.Component {
       const paramsString = String(params);
       newUrl = `?${paramsString}`;
     }
-    window.history.replaceState(window.history.state, '', newUrl);
+    window.history.pushState(window.history.state, '', newUrl);
   }
   render() {
     return null;
