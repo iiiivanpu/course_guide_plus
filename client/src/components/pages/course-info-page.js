@@ -522,7 +522,8 @@ class CourseInfoPage extends React.Component {
           <LogoContainer
             src={Logo}
             alt="website logo"
-            onClick={() => this.props.selectAClass(null)}
+            // Add timeout to make it less abrupt
+            onClick={() => setTimeout(() => this.props.selectAClass(null), 250)}
             draggable="false"
           />
           <SearchBarContainer>
