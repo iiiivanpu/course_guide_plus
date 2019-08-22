@@ -8,7 +8,7 @@ import UrlSync from './url-sync';
 import backgroundImage from '../static/background.jpg';
 import { InlineShareButtons } from 'sharethis-reactjs';
 
-const BackgroundContainer = styled('div', {
+const BackgroundContainer = styled('div', props => ({
   position: 'absolute',
   width: '100%',
   height: '100%',
@@ -18,10 +18,10 @@ const BackgroundContainer = styled('div', {
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  minWidth: '1000px',
+  // minWidth: props.$isMobile ? null : '1000px',
   fontFamily: 'Arial, Helvetica, sans-serif',
   overflow: 'auto',
-});
+}));
 const TopbarContainer = styled('div', {
   display: 'flex',
   flexDirection: 'row-reverse',
@@ -97,6 +97,7 @@ class App extends Component {
   }
 
   handleWindowSizeChange = () => {
+    console.log(window.innerWidth);
     const isMobile = window.innerWidth <= 800;
     this.props.updateIsMobile(isMobile);
   };
@@ -158,7 +159,7 @@ class App extends Component {
       <React.Fragment>
         <UrlSync />
         <Router>
-          <BackgroundContainer>
+          <BackgroundContainer $isMobile={this.props.isMobile}>
             <TopbarContainer>
               {/* Reverse the order because using row-reverse */}
               <TopbarElementContainer>
@@ -187,7 +188,7 @@ class App extends Component {
             <Route path="/contact" component={this.Contact} />
           </BackgroundContainer>
         </Router>
-        {/* {this.renderFooter(this.props.courseSelected)} */}
+        {this.renderFooter(this.props.courseSelected)}
       </React.Fragment>
     );
   }
@@ -195,6 +196,7 @@ class App extends Component {
 
 const mapStateToProps = state => ({
   courseSelected: state.selectedClass !== null,
+  isMobile: state.isMobile,
 });
 
 const mapDispatchToProps = dispatch => ({
