@@ -5,7 +5,7 @@ import { updateIsMobile, selectAClass } from '../reducers/mainUi';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import UrlSync from './url-sync';
-import backgroundImage from '../static/background.jpg';
+import backgroundImage from '../static/background.webp';
 import { InlineShareButtons } from 'sharethis-reactjs';
 
 const BackgroundContainer = styled('div', props => ({
