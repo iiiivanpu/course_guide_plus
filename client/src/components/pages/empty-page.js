@@ -46,7 +46,7 @@ const SloganContainer = styled('div', {
 });
 const SearchBarContainer = styled('div', {
   position: 'aboluste',
-  width: '120%',
+  width: '135%',
   userSelect: 'none',
 });
 
