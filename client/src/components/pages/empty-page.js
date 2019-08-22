@@ -26,7 +26,6 @@ const EmptyPageContainer = styled('div', {
 });
 const LogoContainer = styled('img', {
   marginBottom: '10px',
-  width: '65%',
   userSelect: 'none',
   cursor: 'pointer',
 
@@ -47,7 +46,7 @@ const SloganContainer = styled('div', {
 });
 const SearchBarContainer = styled('div', {
   position: 'aboluste',
-  width: '100%',
+  width: '120%',
   userSelect: 'none',
 });
 
