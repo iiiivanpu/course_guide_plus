@@ -6,7 +6,9 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import UrlSync from './url-sync';
 import backgroundImage from '../static/background.webp';
+import backgroundImageMin from '../static/background-min.webp';
 import { InlineShareButtons } from 'sharethis-reactjs';
+import BackgroundImageOnLoad from 'background-image-on-load';
 
 const BackgroundContainer = styled('div', props => ({
   position: 'absolute',
@@ -14,7 +16,9 @@ const BackgroundContainer = styled('div', props => ({
   height: '100%',
   left: '0',
   top: '0',
-  backgroundImage: `url(${backgroundImage})`,
+  backgroundImage: `url(${
+    props.$backgroundLoaded ? backgroundImage : backgroundImageMin
+  })`,
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
@@ -84,6 +88,10 @@ function Footer({ children }) {
 }
 
 class App extends Component {
+  state = {
+    backgroundLoaded: false,
+  };
+
   componentWillMount() {
     window.addEventListener('resize', this.handleWindowSizeChange);
   }
@@ -103,7 +111,6 @@ class App extends Component {
   };
 
   renderFooter = courseSelected => {
-    console.log(courseSelected);
     return courseSelected ? null : (
       <Footer>
         <SocialShareContainer>
@@ -159,7 +166,22 @@ class App extends Component {
       <React.Fragment>
         <UrlSync />
         <Router>
-          <BackgroundContainer $isMobile={this.props.isMobile}>
+          <BackgroundContainer
+            $isMobile={this.props.isMobile}
+            $backgroundLoaded={this.state.backgroundLoaded}
+          >
+            <BackgroundImageOnLoad
+              src={backgroundImage}
+              onLoadBg={() =>
+                this.setState(
+                  {
+                    backgroundLoaded: true,
+                  },
+                  () => console.log('test')
+                )
+              }
+              onError={err => console.log('error', err)}
+            />
             <TopbarContainer>
               {/* Reverse the order because using row-reverse */}
               <TopbarElementContainer>

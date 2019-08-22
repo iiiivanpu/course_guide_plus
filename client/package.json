@@ -6,6 +6,7 @@
     "@types/react": "^16.8.24",
     "@types/react-redux": "^7.1.1",
     "@types/react-virtualized": "^9.21.4",
+    "background-image-on-load": "^1.1.0",
     "baseui": "^8.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
