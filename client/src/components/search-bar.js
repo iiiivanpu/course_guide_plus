@@ -102,7 +102,6 @@ class SearchBar extends React.Component {
             : 'Type Course Code or Course Name Here...'
         }
         type={TYPE.search}
-        startOpen
       />
     );
   }
