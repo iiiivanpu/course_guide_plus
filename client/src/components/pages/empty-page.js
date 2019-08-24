@@ -36,8 +36,8 @@ const LogoContainer = styled('img', {
 const SloganContainer = styled('div', {
   userSelect: 'none',
   color: 'white',
-  fontSize: '20px',
-  marginBottom: '30px',
+  fontSize: '22px',
+  marginBottom: '25px',
   textAlign: 'center',
 
   display: 'block',
@@ -45,8 +45,8 @@ const SloganContainer = styled('div', {
   marginRight: 'auto',
 });
 const SearchBarContainer = styled('div', {
-  position: 'aboluste',
-  width: '135%',
+  position: 'relative',
+  width: '125%',
   userSelect: 'none',
 });
 
