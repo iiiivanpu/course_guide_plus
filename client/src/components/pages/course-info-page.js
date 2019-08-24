@@ -357,16 +357,20 @@ class CourseInfoPage extends React.Component {
         );
       } else {
         output.push(
-          <a
-            key={courseCode}
-            style={{ color: 'blue' }}
-            href={courseLink}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={`Link to course ${courseCode}`}
-          >
-            {courseCode}
-          </a>
+          courseCode !== this.props.courseName ? (
+            <a
+              key={courseCode}
+              style={{ color: 'blue' }}
+              href={courseLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={`Link to course ${courseCode}`}
+            >
+              {courseCode}
+            </a>
+          ) : (
+            <span key={courseCode}>{courseCode}</span>
+          )
         );
       }
 
