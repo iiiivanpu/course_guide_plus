@@ -19,7 +19,7 @@ let firstCall = true;
 const initialUrlSync = state => {
   firstCall = false;
   const params = new URLSearchParams(window.location.search);
-  const type = params.get('type');
+  const type = params.get('type').toUpperCase();
   const number = params.get('number');
   type && number
     ? (state.selectedClass = `${type} ${number}`)

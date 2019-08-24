@@ -77,7 +77,8 @@ const ClassInfoRight = styled('div', {
   position: 'relative',
 });
 const ClassInfoItem = styled('div', {
-  display: 'flex',
+  display: 'table',
+  // display: 'flex',
 });
 const ClassInfoItemBold = styled('div', {
   fontWeight: 'bold',
@@ -156,10 +157,14 @@ const RMPLogoContainer = styled('img', props => ({
   mixBlendMode: 'multiply',
 }));
 const RMPScore = styled('a', {
+  position: 'relative',
+  fontWeight: 'bold',
   fontSize: '30px',
   color: '#28A9E0',
   display: 'flex',
   alignItems: 'center',
+  textDecoration: 'none',
+  top: '-5px',
 });
 const DayTimeContainer = styled('div', {
   position: 'absolute',
@@ -247,14 +252,15 @@ class CourseInfoPage extends React.Component {
   // A helper function that renders each class info item
   // key: string is the left title, value: string is the right description
   renderClassInfoItem(key, value) {
-    if (key === 'Description') console.log(key, value, value.length);
     let newValue = value;
     if (value === null || typeof value === 'undefined') newValue = 'N/A';
     return (
       <ClassInfoItem>
         <ClassInfoItemRegular>
           <ClassInfoItemBold>{`${key}:`}</ClassInfoItemBold>
-          {newValue}
+          {key === 'Enforced Prerequisites'
+            ? this.renderEnforcedPrereq(newValue)
+            : newValue}
         </ClassInfoItemRegular>
       </ClassInfoItem>
     );
@@ -271,6 +277,104 @@ class CourseInfoPage extends React.Component {
         </ClassInfoItemRegularMobile>
       </ClassInfoItemMobile>
     );
+  }
+
+  gradeRequirementHelper(value, output, count) {
+    // Process grade requirement
+    let front = 0;
+    let match;
+    const gradeRegExp = RegExp(
+      /at least [A|B|C][+|-]?|[A|B|C][+|-]? or better|graduate standing|minimum gpa of \d.\d/,
+      'gi'
+    );
+    while ((match = gradeRegExp.exec(value)) !== null) {
+      const matchLength = match[0].length;
+      const pos = match.index;
+      const matchPhrase = value.substring(pos, pos + matchLength);
+      output.push(
+        <span key={`grade-${pos}-${matchLength}`}>
+          {value.substring(front, pos)}
+        </span>
+      );
+      output.push(
+        <span key={matchPhrase} style={{ color: 'red' }}>
+          {matchPhrase}
+        </span>
+      );
+      front = pos + matchLength;
+    }
+    const followingText = value.substring(front, value.length);
+    output.push(<span key={`grade-end-${count}`}>{followingText}</span>);
+  }
+
+  renderEnforcedPrereq(value) {
+    if (value === 'N/A') return <>{value}</>;
+
+    let output = [];
+    let front = 0;
+    let match;
+    let count = 0;
+    let previousCourseType = '';
+
+    // Process course codes
+    const courseCodeRegExp = RegExp(
+      /[A-Z]{3,} [0-9]{3,}|[A-Z]{3,}[0-9]{3,}|or [0-9]{3,}/,
+      'g'
+    );
+    while ((match = courseCodeRegExp.exec(value)) !== null) {
+      count += 1;
+      const matchLength = match[0].length;
+      const matchPos = match.index;
+      const previousText = value.substring(front, matchPos);
+      let courseCode = value.substring(matchPos, matchPos + matchLength);
+      const [courseType, courseNumber] = courseCode.split(' ');
+      let newCourseType = courseType.toUpperCase();
+      const courseTypeMissing = newCourseType === 'OR';
+
+      if (courseTypeMissing) {
+        newCourseType = previousCourseType;
+      } else {
+        previousCourseType = courseType;
+      }
+      const courseLink = `https://course-guide-plus.ml/?type=${newCourseType}&number=${courseNumber}`;
+
+      this.gradeRequirementHelper(previousText, output, count);
+      if (courseTypeMissing) {
+        output.push(
+          <span key={`${newCourseType}-${courseNumber}-or`}>or </span>
+        );
+        output.push(
+          <a
+            key={courseCode}
+            style={{ color: 'blue' }}
+            href={courseLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Link to course ${newCourseType} ${courseNumber}`}
+          >
+            {courseNumber}
+          </a>
+        );
+      } else {
+        output.push(
+          <a
+            key={courseCode}
+            style={{ color: 'blue' }}
+            href={courseLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`Link to course ${courseCode}`}
+          >
+            {courseCode}
+          </a>
+        );
+      }
+
+      front = matchPos + matchLength;
+    }
+    const followingText = value.substring(front, value.length);
+    this.gradeRequirementHelper(followingText, output);
+    return <>{output}</>;
   }
 
   // Renders message for courses that are not in the all_course_name_list.json file
@@ -343,6 +447,8 @@ class CourseInfoPage extends React.Component {
                   <ClassInfoItemRegularMobile>
                     <StyledLink
                       href={classUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       title={`Link to LSA Course Guide for course ${title}`}
                     >
                       {classUrl}
@@ -377,6 +483,8 @@ class CourseInfoPage extends React.Component {
                     <ClassInfoItemRegularMobile>
                       <StyledLink
                         href={instructorUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         title={
                           instructorScore
                             ? `Link to RateMyProfessors.com for instructor ${instructorName}`
@@ -431,6 +539,8 @@ class CourseInfoPage extends React.Component {
                         <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
                         <StyledLink
                           href={classUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           title={`Link to LSA Course Guide for course ${title}`}
                         >
                           {classUrl}
@@ -447,6 +557,8 @@ class CourseInfoPage extends React.Component {
                         <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
                         <StyledLink
                           href={classUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           title={`Link to LSA Course Guide for course ${title}`}
                         >
                           {classUrl}
@@ -482,6 +594,8 @@ class CourseInfoPage extends React.Component {
                         <ClassInfoItemBold>Instructor:</ClassInfoItemBold>
                         <StyledLink
                           href={instructorUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           title={
                             instructorUrl
                               ? `Link to RateMyProfessor.com for instructor ${instructorName}`
@@ -506,7 +620,11 @@ class CourseInfoPage extends React.Component {
                   </ClassInfoLeft>
                   <ClassInfoRight>
                     <RMPContainer>
-                      <a href={instructorUrl}>
+                      <a
+                        href={instructorUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         <RMPLogoContainer
                           src={RMPLogo}
                           alt="Rate my professor logo"
@@ -520,6 +638,8 @@ class CourseInfoPage extends React.Component {
                       </a>
                       <RMPScore
                         href={instructorUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         title={
                           instructorScore
                             ? `Link to RateMyProfessors.com for instructor ${instructorName}`
