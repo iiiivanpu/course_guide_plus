@@ -17,7 +17,7 @@ const ListItem = withStyle(StyledDropdownListItem, {
 const Container = withStyle(StyledList, {
   height: '250px',
   maxWidth: '570px',
-  borderRadius: '50px',
+  borderRadius: '30px',
 });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
@@ -82,10 +82,10 @@ class SearchBar extends React.Component {
             },
           },
           Popover: {
-            style: { borderRadius: '50px' },
             props: {
               overrides: {
-                Body: { style: { borderRadius: '50px' } },
+                Body: { style: { borderRadius: '30px', top: '-7px' } },
+                Inner: { style: { borderRadius: '30px' } },
               },
             },
           },
@@ -102,7 +102,7 @@ class SearchBar extends React.Component {
             : 'Type Course Code or Course Name Here...'
         }
         type={TYPE.search}
-        //startOpen
+        startOpen
       />
     );
   }
