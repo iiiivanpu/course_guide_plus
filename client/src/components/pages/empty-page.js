@@ -22,7 +22,7 @@ const EmptyPageContainer = styled('div', {
   alignItems: 'center',
   flexDirection: 'column',
   // Offset for a more center look
-  marginTop: '-320px',
+  marginTop: '-300px',
 });
 const LogoContainer = styled('img', {
   marginBottom: '10px',

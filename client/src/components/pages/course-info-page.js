@@ -23,8 +23,8 @@ const StyledLink = styled('a', props => ({
   color: props.$hasLink ? '#2c3e6d' : 'black',
 }));
 const LogoSearchBarContainer = styled('div', {
-  top: '-70px',
-  left: '30px',
+  top: '-58px',
+  left: '5px',
   position: 'absolute',
   display: 'flex',
   justifyContent: 'center',
@@ -105,7 +105,6 @@ const ClassInfoItemRegularMobile = styled('div', {
 const ClassTitle = styled('div', {
   color: 'white',
   backgroundColor: '#2c3e6d',
-  border: '1px solid grey',
   borderRadius: '10px',
   padding: '10px',
   display: 'table',
@@ -121,7 +120,6 @@ const SpinnerContainer = styled('div', {
 });
 const SectionTitle = styled('div', {
   backgroundColor: '#FFCB05',
-  border: '1px solid grey',
   borderRadius: '10px',
   padding: '10px',
   display: 'table',
@@ -249,22 +247,27 @@ class CourseInfoPage extends React.Component {
   // A helper function that renders each class info item
   // key: string is the left title, value: string is the right description
   renderClassInfoItem(key, value) {
+    if (key === 'Description') console.log(key, value, value.length);
+    let newValue = value;
+    if (value === null || typeof value === 'undefined') newValue = 'N/A';
     return (
       <ClassInfoItem>
         <ClassInfoItemRegular>
           <ClassInfoItemBold>{`${key}:`}</ClassInfoItemBold>
-          {value}
+          {newValue}
         </ClassInfoItemRegular>
       </ClassInfoItem>
     );
   }
 
   renderClassInfoItemMobile(key, value) {
+    let newValue = value;
+    if (value === null || typeof value === 'undefined') newValue = 'N/A';
     return (
       <ClassInfoItemMobile>
         <ClassInfoItemRegularMobile>
           <ClassInfoItemBoldMobile>{`${key}:`}</ClassInfoItemBoldMobile>
-          {value}
+          {newValue}
         </ClassInfoItemRegularMobile>
       </ClassInfoItemMobile>
     );
@@ -317,6 +320,7 @@ class CourseInfoPage extends React.Component {
         const enforcedPrereq = currentClass.en_prereq;
         const classUrl = currentClass.lsa_url;
         const { credit, term, description } = currentClass;
+        const longDescription = description.length > 400;
         if (this.props.isMobile) {
           // Currently on a mobile device
           // Render class info
@@ -421,20 +425,35 @@ class CourseInfoPage extends React.Component {
                     'Enforced Prerequisites',
                     enforcedPrereq
                   )}
+                  {longDescription && (
+                    <ClassInfoItem>
+                      <ClassInfoItemRegular>
+                        <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
+                        <StyledLink
+                          href={classUrl}
+                          title={`Link to LSA Course Guide for course ${title}`}
+                        >
+                          {classUrl}
+                        </StyledLink>
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                  )}
                 </ClassInfoLeft>
                 <ClassInfoRight>
                   {this.renderClassInfoItem('Description', description)}
-                  <ClassInfoItem>
-                    <ClassInfoItemRegular>
-                      <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
-                      <StyledLink
-                        href={classUrl}
-                        title={`Link to LSA Course Guide for course ${title}`}
-                      >
-                        {classUrl}
-                      </StyledLink>
-                    </ClassInfoItemRegular>
-                  </ClassInfoItem>
+                  {!longDescription && (
+                    <ClassInfoItem>
+                      <ClassInfoItemRegular>
+                        <ClassInfoItemBold>Course Link:</ClassInfoItemBold>
+                        <StyledLink
+                          href={classUrl}
+                          title={`Link to LSA Course Guide for course ${title}`}
+                        >
+                          {classUrl}
+                        </StyledLink>
+                      </ClassInfoItemRegular>
+                    </ClassInfoItem>
+                  )}
                 </ClassInfoRight>
               </InfoContainer>
             </ClassInfoContainer>

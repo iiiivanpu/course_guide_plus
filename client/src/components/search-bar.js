@@ -17,11 +17,12 @@ const ListItem = withStyle(StyledDropdownListItem, {
 const Container = withStyle(StyledList, {
   height: '250px',
   maxWidth: '570px',
+  borderRadius: '50px',
 });
 const VirtualList = React.forwardRef((props, ref) => {
   const children = React.Children.toArray(props.children);
   return (
-    <Container ref={ref}>
+    <Container ref={ref} id="container">
       <AutoSizer>
         {({ width }) => (
           <List
@@ -80,6 +81,14 @@ class SearchBar extends React.Component {
               alignItems: 'center',
             },
           },
+          Popover: {
+            style: { borderRadius: '50px' },
+            props: {
+              overrides: {
+                Body: { style: { borderRadius: '50px' } },
+              },
+            },
+          },
         }}
         onChange={event => {
           if (event.type === 'select') selectAClass(event.option.id);
@@ -93,6 +102,7 @@ class SearchBar extends React.Component {
             : 'Type Course Code or Course Name Here...'
         }
         type={TYPE.search}
+        //startOpen
       />
     );
   }

@@ -29,13 +29,13 @@ const BackgroundContainer = styled('div', props => ({
 const TopbarContainer = styled('div', {
   display: 'flex',
   flexDirection: 'row-reverse',
-  margin: '15px 25px 15px 0',
+  margin: '8px 25px 8px 0',
 });
 const TopbarElementContainer = styled('div', {
   color: 'white',
-  fontSize: '22px',
+  fontSize: '18px',
   marginLeft: '50px',
-  marginTop: '7px',
+  marginTop: '2px',
 });
 const linkStyle = {
   textDecoration: 'none',
