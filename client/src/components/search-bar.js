@@ -19,7 +19,8 @@ const ListItemMobile = withStyle(StyledDropdownListItem, {
   paddingBottom: 0,
   display: 'flex',
   alignItems: 'center',
-  backgroundColor: 'white',
+  backgroundColor: 'rgba(255,255,255,0.0)',
+  borderRadius: '100px',
 });
 const Container = withStyle(StyledList, {
   height: '250px',
