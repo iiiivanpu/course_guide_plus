@@ -5,8 +5,8 @@ import { updateIsMobile, selectAClass } from '../reducers/mainUi';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import UrlSync from './url-sync';
-import backgroundImage from '../static/background.webp';
-import backgroundImageMin from '../static/background-min.webp';
+import backgroundImage from '../static/background.jpg';
+import backgroundImageMin from '../static/background-min.jpg';
 import { InlineShareButtons } from 'sharethis-reactjs';
 import BackgroundImageOnLoad from 'background-image-on-load';
 
