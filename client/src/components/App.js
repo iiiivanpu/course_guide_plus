@@ -24,7 +24,7 @@ const BackgroundContainer = styled('div', props => ({
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   fontFamily: 'Arial, Helvetica, sans-serif',
-  overflow: 'auto',
+  overflow: props.$courseSelected ? 'auto' : 'hidden',
 }));
 const TopbarContainer = styled('div', {
   display: 'flex',
@@ -268,7 +268,10 @@ class App extends Component {
       <React.Fragment>
         <UrlSync />
         <Router>
-          <BackgroundContainer $backgroundLoaded={backgroundLoaded}>
+          <BackgroundContainer
+            $backgroundLoaded={backgroundLoaded}
+            $courseSelected={courseSelected}
+          >
             <BackgroundImageOnLoad
               src={backgroundImage}
               onLoadBg={() =>

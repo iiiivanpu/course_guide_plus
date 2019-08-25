@@ -13,6 +13,7 @@ const ListItem = withStyle(StyledDropdownListItem, {
   paddingBottom: 0,
   display: 'flex',
   alignItems: 'center',
+  borderRadius: '30px',
 });
 const Container = withStyle(StyledList, {
   height: '250px',
@@ -87,6 +88,11 @@ class SearchBar extends React.Component {
                 Body: { style: { borderRadius: '30px', top: '-7px' } },
                 Inner: { style: { borderRadius: '30px' } },
               },
+            },
+          },
+          OptionContent: {
+            style: {
+              color: 'red',
             },
           },
         }}
