@@ -9,6 +9,7 @@ import backgroundImage from '../static/background.jpg';
 import backgroundImageMin from '../static/background-min.jpg';
 import { InlineShareButtons } from 'sharethis-reactjs';
 import BackgroundImageOnLoad from 'background-image-on-load';
+import { slide as Menu } from 'react-burger-menu';
 
 const BackgroundContainer = styled('div', props => ({
   position: 'absolute',
@@ -22,7 +23,6 @@ const BackgroundContainer = styled('div', props => ({
   backgroundPosition: 'center',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
-  // minWidth: props.$isMobile ? null : '1000px',
   fontFamily: 'Arial, Helvetica, sans-serif',
   overflow: 'auto',
 }));
@@ -72,17 +72,86 @@ const footerStyle = {
   height: '1px',
   width: '100%',
 };
-const phantomStyle = {
-  display: 'block',
-  padding: '20px',
-  height: '60px',
+
+const headerStyle = {
+  backgroundColor: '#003283',
+  fontSize: '20px',
+  color: 'white',
+  position: 'fixed',
+  left: '0',
+  right: '0',
+  top: '0',
+  height: '35px',
+  width: '100%',
+};
+
+const hamburgerMenuStyle = {
+  bmBurgerButton: {
+    color: 'white',
+    backgroundColor: 'white',
+    position: 'fixed',
+    width: '25px',
+    height: '20px',
+    top: '5px',
+    right: '10px',
+  },
+  bmBurgerBars: {
+    background: '#373a47',
+  },
+  bmBurgerBarsHover: {
+    background: '#a90000',
+  },
+  bmCrossButton: {
+    // height: '30px',
+    // width: '30px',
+    height: '24px',
+    width: '24px',
+  },
+  bmCross: {
+    background: '#bdc3c7',
+  },
+  bmMenuWrap: {
+    position: 'fixed',
+    height: '100%',
+  },
+  bmMenu: {
+    background: '#373a47',
+    padding: '2.5em 1.5em 0',
+    fontSize: '1.15em',
+    overflow: 'hidden',
+  },
+  bmMorphShape: {
+    fill: '#373a47',
+  },
+  bmItemList: {
+    padding: '0.8em',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  bmItem: {
+    display: 'inline-block',
+    marginBottom: '10px',
+    color: 'white',
+    fontFamily: 'Arial, Helvetica, sans-serif',
+    textDecoration: 'none',
+  },
+  bmOverlay: {
+    background: 'rgba(0, 0, 0, 0.5)',
+  },
 };
 
 function Footer({ children }) {
   return (
     <div>
-      <div style={phantomStyle} />
       <div style={footerStyle}>{children}</div>
+    </div>
+  );
+}
+
+function Header({ children }) {
+  return (
+    <div>
+      <div style={headerStyle}>{children}</div>
     </div>
   );
 }
@@ -106,6 +175,10 @@ class App extends Component {
     const isMobile = window.innerWidth <= 800;
     this.props.updateIsMobile(isMobile);
   };
+
+  showSettings(event) {
+    event.preventDefault();
+  }
 
   renderFooter = courseSelected => {
     return courseSelected ? null : (
@@ -142,6 +215,36 @@ class App extends Component {
     );
   };
 
+  renderHeader = courseSelected => {
+    return (
+      <Header>
+        <Menu
+          right
+          styles={hamburgerMenuStyle}
+          //customBurgerIcon={
+          //            <img src={hamburgerMenuIcon} alt="Hamburger menu open icon" />
+          //        }
+          //      customCrossIcon={
+          //      <img src={close} alt="Hamburger menu close button" />
+          //  }
+        >
+          <a id="home" className="menu-item" href="/">
+            Home
+          </a>
+          <a id="about" className="menu-item" href="/about">
+            About
+          </a>
+          <a id="contact" className="menu-item" href="/contact">
+            Contact
+          </a>
+          <a onClick={this.showSettings} className="menu-item--small" href="/">
+            Settings
+          </a>
+        </Menu>
+      </Header>
+    );
+  };
+
   About = () => {
     return (
       <div>
@@ -159,14 +262,13 @@ class App extends Component {
   };
 
   render() {
+    const { backgroundLoaded } = this.state;
+    const { isMobile, courseSelected, selectAClass } = this.props;
     return (
       <React.Fragment>
         <UrlSync />
         <Router>
-          <BackgroundContainer
-            $isMobile={this.props.isMobile}
-            $backgroundLoaded={this.state.backgroundLoaded}
-          >
+          <BackgroundContainer $backgroundLoaded={backgroundLoaded}>
             <BackgroundImageOnLoad
               src={backgroundImage}
               onLoadBg={() =>
@@ -176,35 +278,39 @@ class App extends Component {
               }
               onError={err => console.log('error', err)}
             />
-            <TopbarContainer>
-              {/* Reverse the order because using row-reverse */}
-              <TopbarElementContainer>
-                <Link to="/contact" style={linkStyle}>
-                  <StyledAnchor>Contact</StyledAnchor>
-                </Link>
-              </TopbarElementContainer>
-              <TopbarElementContainer>
-                <Link to="/about" style={linkStyle}>
-                  <StyledAnchor>About</StyledAnchor>
-                </Link>
-              </TopbarElementContainer>
-              <TopbarElementContainer>
-                <Link
-                  to="/"
-                  onClick={() => this.props.selectAClass(null)}
-                  style={linkStyle}
-                >
-                  <StyledAnchor>Home</StyledAnchor>
-                </Link>
-              </TopbarElementContainer>
-            </TopbarContainer>
-            <hr />
+            {!isMobile && (
+              <TopbarContainer>
+                {/* Reverse the order because using row-reverse */}
+                <TopbarElementContainer>
+                  <Link to="/contact" style={linkStyle}>
+                    <StyledAnchor>Contact</StyledAnchor>
+                  </Link>
+                </TopbarElementContainer>
+                <TopbarElementContainer>
+                  <Link to="/about" style={linkStyle}>
+                    <StyledAnchor>About</StyledAnchor>
+                  </Link>
+                </TopbarElementContainer>
+                <TopbarElementContainer>
+                  <Link
+                    to="/"
+                    onClick={() => selectAClass(null)}
+                    style={linkStyle}
+                  >
+                    <StyledAnchor>Home</StyledAnchor>
+                  </Link>
+                </TopbarElementContainer>
+              </TopbarContainer>
+            )}
+            {!isMobile && <hr />}
             <Route exact path="/" component={MainPage} />
             <Route path="/about" component={this.About} />
             <Route path="/contact" component={this.Contact} />
           </BackgroundContainer>
         </Router>
-        {this.renderFooter(this.props.courseSelected)}
+        {isMobile
+          ? this.renderHeader(courseSelected)
+          : this.renderFooter(courseSelected)}
       </React.Fragment>
     );
   }

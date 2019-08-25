@@ -16,14 +16,14 @@ const MainContainer = styled('div', {
   alignItems: 'center',
   justifyContent: 'center',
 });
-const EmptyPageContainer = styled('div', {
+const EmptyPageContainer = styled('div', props => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   flexDirection: 'column',
   // Offset for a more center look
-  marginTop: '-300px',
-});
+  marginTop: props.$isMobile ? '-200px' : '-300px',
+}));
 const LogoContainer = styled('img', {
   marginBottom: '10px',
   userSelect: 'none',
@@ -33,39 +33,40 @@ const LogoContainer = styled('img', {
   marginLeft: 'auto',
   marginRight: 'auto',
 });
-const SloganContainer = styled('div', {
+const SloganContainer = styled('div', props => ({
   userSelect: 'none',
   color: 'white',
-  fontSize: '22px',
+  fontSize: props.$isMobile ? '16px' : '22px',
   marginBottom: '25px',
   textAlign: 'center',
 
   display: 'block',
   marginLeft: 'auto',
   marginRight: 'auto',
-});
-const SearchBarContainer = styled('div', {
+}));
+const SearchBarContainer = styled('div', props => ({
   position: 'relative',
-  width: '125%',
+  width: props.$isMobile ? '110%' : '125%',
   userSelect: 'none',
-});
+}));
 
 class EmptyPage extends React.Component {
   render() {
+    const { isMobile } = this.props;
     return (
-      <MainContainer $isMobile={this.props.isMobile}>
-        <EmptyPageContainer>
+      <MainContainer $isMobile={isMobile}>
+        <EmptyPageContainer $isMobile={isMobile}>
           <LogoContainer
             src={Logo}
             alt="website logo"
             onClick={() => this.props.selectAClass(null)}
             draggable="false"
-            height={70}
+            height={isMobile ? 52 : 70}
           />
-          <SloganContainer>
+          <SloganContainer $isMobile={isMobile}>
             Easier and Faster Way to Find your Courses
           </SloganContainer>
-          <SearchBarContainer>
+          <SearchBarContainer $isMobile={isMobile}>
             <SearchBar />
           </SearchBarContainer>
         </EmptyPageContainer>

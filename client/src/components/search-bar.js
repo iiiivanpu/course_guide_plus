@@ -62,7 +62,7 @@ const allSelectOptions = Object.keys(courseCodeToCourseMap).reduce(
 );
 class SearchBar extends React.Component {
   render() {
-    const { courseName, selectAClass } = this.props;
+    const { courseName, selectAClass, isMobile } = this.props;
     return (
       <StatefulSelect
         creatable
@@ -102,6 +102,7 @@ class SearchBar extends React.Component {
             : 'Type Course Code or Course Name Here...'
         }
         type={TYPE.search}
+        size={isMobile ? 'compact' : 'default'}
       />
     );
   }
@@ -115,6 +116,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   courseName: state.selectedClass,
+  isMobile: state.isMobile,
 });
 
 export default connect(

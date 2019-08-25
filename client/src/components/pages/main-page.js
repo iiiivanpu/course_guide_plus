@@ -6,13 +6,15 @@ import CourseInfoPage from './course-info-page';
 
 const MainContainer = styled('div', props => ({
   fontFamily: 'Arial, Helvetica, sans-serif',
+  marginTop: props.$isMobile ? '90px' : null,
 }));
 
 class MainPage extends React.Component {
   render() {
+    const { courseName, isMobile } = this.props;
     return (
-      <MainContainer>
-        {this.props.courseName === null ? <EmptyPage /> : <CourseInfoPage />}
+      <MainContainer $isMobile={isMobile}>
+        {courseName === null ? <EmptyPage /> : <CourseInfoPage />}
       </MainContainer>
     );
   }

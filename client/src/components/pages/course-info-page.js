@@ -10,11 +10,10 @@ import RMPLogo from '../../static/RMP.jpg';
 const CourseInfoPageContainer = styled('div', props => ({
   display: 'flex',
   flexDirection: 'column',
-  // margin: props.$isMobile ? '5px' : '0',
-  margin: '0 15px 15px 15px',
+  margin: props.$isMobile ? '10px' : '0 15px 15px 15px',
   borderRadius: '20px',
   height: '100%',
-  padding: '30px',
+  padding: props.$isMobile ? '10px' : '30px',
   top: '5px',
   position: 'relative',
   backgroundColor: 'rgba(255, 255, 255, 0.9)',
