@@ -13,11 +13,18 @@ const ListItem = withStyle(StyledDropdownListItem, {
   paddingBottom: 0,
   display: 'flex',
   alignItems: 'center',
-  borderRadius: '30px',
+});
+const ListItemMobile = withStyle(StyledDropdownListItem, {
+  paddingTop: 0,
+  paddingBottom: 0,
+  display: 'flex',
+  alignItems: 'center',
+  backgroundColor: 'white',
 });
 const Container = withStyle(StyledList, {
   height: '250px',
-  maxWidth: '570px',
+  // maxWidth: '570px',
+  width: '100%',
   borderRadius: '30px',
 });
 const VirtualList = React.forwardRef((props, ref) => {
@@ -36,7 +43,11 @@ const VirtualList = React.forwardRef((props, ref) => {
               const { resetMenu, getItemLabel, ...childProps } = children[
                 index
               ].props;
-              return (
+              return window.innerWidth <= 800 ? (
+                <ListItemMobile key={key} style={style} {...childProps}>
+                  {childProps.item.label || childProps.item.id}
+                </ListItemMobile>
+              ) : (
                 <ListItem key={key} style={style} {...childProps}>
                   {childProps.item.label || childProps.item.id}
                 </ListItem>
