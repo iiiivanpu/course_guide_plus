@@ -10,6 +10,7 @@ import backgroundImageMin from '../static/background-min.jpg';
 import { InlineShareButtons } from 'sharethis-reactjs';
 import BackgroundImageOnLoad from 'background-image-on-load';
 import { slide as Menu } from 'react-burger-menu';
+import { Collapse } from 'react-collapse';
 
 const BackgroundContainer = styled('div', props => ({
   position: 'absolute',
@@ -134,10 +135,27 @@ const hamburgerMenuStyle = {
     color: 'white',
     fontFamily: 'Arial, Helvetica, sans-serif',
     textDecoration: 'none',
+    ':focus': {
+      outline: 'none',
+    },
   },
   bmOverlay: {
     background: 'rgba(0, 0, 0, 0.5)',
   },
+};
+const inlineShareButtonsBaseConfig = {
+  color: 'social', // set the color of buttons (social, white)
+  enabled: true, // show/hide buttons (true, false)
+  labels: 'null', // button labels (cta, counts, null)
+  language: 'en', // which language to use (see LANGUAGES)
+  padding: 8, // padding within buttons (INTEGER)
+  radius: 200, // the corner radius on each button (INTEGER)
+  show_total: false,
+  size: 30, // the size of each button (INTEGER)
+  url: 'https://course-guide-plus.ml/', // (defaults to current url)
+  description:
+    'Course Guide Plus is an easier and faster way to find courses at the Unviersity of Michigan ', // (defaults to og:description or twitter:description)
+  title: 'Course Guide Plus', // (defaults to og:title or twitter:title)
 };
 
 function Footer({ children }) {
@@ -159,7 +177,16 @@ function Header({ children }) {
 class App extends Component {
   state = {
     backgroundLoaded: false,
+    menuOpen: false,
+    shareOpen: false,
   };
+
+  handleStateChange(state) {
+    this.setState({ menuOpen: state.isOpen });
+  }
+  closeMenu() {
+    this.setState({ menuOpen: false });
+  }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleWindowSizeChange);
@@ -176,8 +203,8 @@ class App extends Component {
     this.props.updateIsMobile(isMobile);
   };
 
-  showSettings(event) {
-    event.preventDefault();
+  showShare() {
+    this.setState(state => ({ shareOpen: !state.shareOpen }));
   }
 
   renderFooter = courseSelected => {
@@ -187,12 +214,8 @@ class App extends Component {
           <SocialShareMessage>Share to Others</SocialShareMessage>
           <InlineShareButtons
             config={{
-              color: 'social', // set the color of buttons (social, white)
-              enabled: true, // show/hide buttons (true, false)
-              labels: 'null', // button labels (cta, counts, null)
-              language: 'en', // which language to use (see LANGUAGES)
+              ...inlineShareButtonsBaseConfig,
               networks: [
-                // which networks to include (see SHARING NETWORKS)
                 'whatsapp',
                 'linkedin',
                 'messenger',
@@ -200,14 +223,6 @@ class App extends Component {
                 'wechat',
                 'twitter',
               ],
-              padding: 8, // padding within buttons (INTEGER)
-              radius: 200, // the corner radius on each button (INTEGER)
-              show_total: false,
-              size: 30, // the size of each button (INTEGER)
-              url: 'https://course-guide-plus.ml/', // (defaults to current url)
-              description:
-                'Course Guide Plus is an easier and faster way to find courses at the Unviersity of Michigan ', // (defaults to og:description or twitter:description)
-              title: 'Course Guide Plus', // (defaults to og:title or twitter:title)
             }}
           />
         </SocialShareContainer>
@@ -219,8 +234,12 @@ class App extends Component {
     return (
       <Header>
         <Menu
+          isOpen={this.state.menuOpen}
+          onStateChange={state => this.handleStateChange(state)}
+          width={'60%'}
           right
           styles={hamburgerMenuStyle}
+          disableAutoFocus
           //customBurgerIcon={
           //            <img src={hamburgerMenuIcon} alt="Hamburger menu open icon" />
           //        }
@@ -228,18 +247,43 @@ class App extends Component {
           //      <img src={close} alt="Hamburger menu close button" />
           //  }
         >
-          <a id="home" className="menu-item" href="/">
-            Home
-          </a>
-          <a id="about" className="menu-item" href="/about">
-            About
-          </a>
-          <a id="contact" className="menu-item" href="/contact">
-            Contact
-          </a>
-          <a onClick={this.showSettings} className="menu-item--small" href="/">
-            Settings
-          </a>
+          <Link
+            to="/"
+            onClick={() => {
+              selectAClass(null);
+              this.closeMenu();
+            }}
+            style={linkStyle}
+          >
+            <StyledAnchor>Home</StyledAnchor>
+          </Link>
+          <Link to="/about" style={linkStyle} onClick={() => this.closeMenu()}>
+            <StyledAnchor>About</StyledAnchor>
+          </Link>
+          <Link
+            to="/contact"
+            style={linkStyle}
+            onClick={() => this.closeMenu()}
+          >
+            <StyledAnchor>Contact</StyledAnchor>
+          </Link>
+          <div onClick={() => this.showShare()}>Share</div>
+          <Collapse isOpened={this.state.shareOpen}>
+            <div style={{ marginBottom: '10px' }}>
+              <InlineShareButtons
+                config={{
+                  ...inlineShareButtonsBaseConfig,
+                  networks: ['whatsapp', 'linkedin', 'messenger'],
+                }}
+              />
+            </div>
+            <InlineShareButtons
+              config={{
+                ...inlineShareButtonsBaseConfig,
+                networks: ['facebook', 'wechat', 'twitter'],
+              }}
+            />{' '}
+          </Collapse>
         </Menu>
       </Header>
     );
@@ -310,10 +354,10 @@ class App extends Component {
             <Route path="/about" component={this.About} />
             <Route path="/contact" component={this.Contact} />
           </BackgroundContainer>
+          {isMobile
+            ? this.renderHeader(courseSelected)
+            : this.renderFooter(courseSelected)}
         </Router>
-        {isMobile
-          ? this.renderHeader(courseSelected)
-          : this.renderFooter(courseSelected)}
       </React.Fragment>
     );
   }

@@ -97,38 +97,37 @@ const ClassInfoItemBoldMobile = styled('div', {
   marginRight: '5px',
 });
 const ClassInfoItemRegularMobile = styled('div', {
-  marginTop: '2px',
   // Wrap long links
   overflowWrap: 'break-word',
   wordWrap: 'break-word',
 });
-const ClassTitle = styled('div', {
+const ClassTitle = styled('div', props => ({
   color: 'white',
   backgroundColor: '#2c3e6d',
   borderRadius: '10px',
-  padding: '10px',
+  padding: props.$isMobile ? '3px 10px 3px 10px' : '10px',
   display: 'table',
   width: 'auto',
   fontWeight: 'bold',
   // Use max and min width to automatically adjust the width
   maxWidth: '100%',
   minWidth: '0',
-});
+}));
 const SpinnerContainer = styled('div', {
   marginTop: '50px',
   marginLeft: '50px',
 });
-const SectionTitle = styled('div', {
+const SectionTitle = styled('div', props => ({
   backgroundColor: '#FFCB05',
   borderRadius: '10px',
-  padding: '10px',
+  padding: props.$isMobile ? '3px 10px 3px 10px' : '10px',
   display: 'table',
   width: 'auto',
   fontWeight: 'bold',
   // Use max and min width to automatically adjust the width
   maxWidth: '100%',
   minWidth: '0',
-});
+}));
 const SectionInfoCointainer = styled('div', {
   marginBottom: '30px',
   width: '70%',
@@ -272,7 +271,9 @@ class CourseInfoPage extends React.Component {
       <ClassInfoItemMobile>
         <ClassInfoItemRegularMobile>
           <ClassInfoItemBoldMobile>{`${key}:`}</ClassInfoItemBoldMobile>
-          {newValue}
+          {key === 'Enforced Prerequisites'
+            ? this.renderEnforcedPrereq(newValue)
+            : newValue}
         </ClassInfoItemRegularMobile>
       </ClassInfoItemMobile>
     );
@@ -433,7 +434,7 @@ class CourseInfoPage extends React.Component {
           // Render class info
           classElements.push(
             <ClassInfoContainerMobile key="classInfo-mobile">
-              <ClassTitle>{title}</ClassTitle>
+              <ClassTitle $isMobile={this.props.isMobile}>{title}</ClassTitle>
               <InfoContainerMobile>
                 {this.renderClassInfoItemMobile('Department', department)}
                 {this.renderClassInfoItemMobile('Credit', credit)}
@@ -477,7 +478,9 @@ class CourseInfoPage extends React.Component {
             } = currentSection;
             classElements.push(
               <SectionInfoCointainerMobile key={sectionId}>
-                <SectionTitle>{`Section ${section} - ${sectionId}`}</SectionTitle>
+                <SectionTitle
+                  $isMobile={this.props.isMobile}
+                >{`Section ${section} - ${sectionId}`}</SectionTitle>
                 <InfoContainerMobile>
                   <ClassInfoItemMobile>
                     <ClassInfoItemBoldMobile>
@@ -499,10 +502,21 @@ class CourseInfoPage extends React.Component {
                       </StyledLink>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
-                  {this.renderClassInfoItemMobile(
-                    'RateMyProfessor Score',
-                    instructorScore
-                  )}
+                  <ClassInfoItemMobile>
+                    <ClassInfoItemRegularMobile>
+                      <ClassInfoItemBoldMobile>
+                        RateMyProfessor Score:
+                      </ClassInfoItemBoldMobile>
+                      <span
+                        style={{
+                          color: instructorScore ? '#28A9E0' : 'black',
+                          fontWeight: instructorScore ? 'bold' : 'default',
+                        }}
+                      >
+                        {instructorScore || 'N/A'}
+                      </span>
+                    </ClassInfoItemRegularMobile>
+                  </ClassInfoItemMobile>
                   <ClassInfoItemMobile>
                     <ClassInfoItemRegularMobile>
                       <ClassInfoItemBoldMobile>
@@ -526,7 +540,7 @@ class CourseInfoPage extends React.Component {
           // Render class info
           classElements.push(
             <ClassInfoContainer key="classInfo-pc">
-              <ClassTitle>{title}</ClassTitle>
+              <ClassTitle $isMobile={this.props.isMobile}>{title}</ClassTitle>
               <InfoContainer>
                 <ClassInfoLeft>
                   {this.renderClassInfoItem('Department', department)}
@@ -589,7 +603,9 @@ class CourseInfoPage extends React.Component {
             } = currentSection;
             classElements.push(
               <SectionInfoCointainer key={sectionId}>
-                <SectionTitle>{`Section ${section} - ${sectionId}`}</SectionTitle>
+                <SectionTitle
+                  $isMobile={this.props.isMobile}
+                >{`Section ${section} - ${sectionId}`}</SectionTitle>
                 <InfoContainer>
                   <ClassInfoLeft>
                     <ClassInfoItem>

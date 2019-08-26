@@ -23,7 +23,7 @@ const ListItemMobile = withStyle(StyledDropdownListItem, {
   borderRadius: '100px',
 });
 const Container = withStyle(StyledList, {
-  height: '250px',
+  height: window.innerWidth <= 800 ? '150px' : '250px',
   // maxWidth: '570px',
   width: '100%',
   borderRadius: '30px',
@@ -36,7 +36,7 @@ const VirtualList = React.forwardRef((props, ref) => {
         {({ width }) => (
           <List
             role={props.role}
-            height={250}
+            height={window.innerWidth <= 800 ? 150 : 250}
             width={width}
             rowCount={props.children.length || 0}
             rowHeight={36}
