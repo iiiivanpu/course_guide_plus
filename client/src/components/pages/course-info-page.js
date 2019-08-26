@@ -251,7 +251,15 @@ class CourseInfoPage extends React.Component {
   // key: string is the left title, value: string is the right description
   renderClassInfoItem(key, value) {
     let newValue = value;
-    if (value === null || typeof value === 'undefined') newValue = 'N/A';
+    if (
+      value === null ||
+      typeof value === 'undefined' ||
+      // Exception for empty Location
+      value === '' ||
+      // Exception for empty Day/Time
+      value === ' '
+    )
+      newValue = 'N/A';
     return (
       <ClassInfoItem>
         <ClassInfoItemRegular>
@@ -266,7 +274,15 @@ class CourseInfoPage extends React.Component {
 
   renderClassInfoItemMobile(key, value) {
     let newValue = value;
-    if (value === null || typeof value === 'undefined') newValue = 'N/A';
+    if (
+      value === null ||
+      typeof value === 'undefined' ||
+      // Exception for empty Location
+      value === '' ||
+      // Exception for empty Day/Time
+      value === ' '
+    )
+      newValue = 'N/A';
     return (
       <ClassInfoItemMobile>
         <ClassInfoItemRegularMobile>
@@ -498,7 +514,7 @@ class CourseInfoPage extends React.Component {
                         }
                         $hasLink={instructorUrl}
                       >
-                        {instructorName}
+                        {instructorName || 'N/A'}
                       </StyledLink>
                     </ClassInfoItemRegularMobile>
                   </ClassInfoItemMobile>
@@ -621,7 +637,7 @@ class CourseInfoPage extends React.Component {
                               : `Instructor ${instructorName} has no data at RateMyProfessor.com currently`
                           }
                         >
-                          {instructorName}
+                          {instructorName || 'N/A'}
                         </StyledLink>
                       </ClassInfoItemRegular>
                     </ClassInfoItem>
