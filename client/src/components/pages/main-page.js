@@ -1,31 +1,31 @@
-import React from 'react';
-import { styled } from 'baseui';
-import { connect } from 'react-redux';
-import EmptyPage from './empty-page';
-import CourseInfoPage from './course-info-page';
+import React from 'react'
+import { styled } from 'baseui'
+import { connect } from 'react-redux'
+import EmptyPage from './empty-page'
+import CourseInfoPage from './course-info-page'
 
 const MainContainer = styled('div', props => ({
   fontFamily: 'Arial, Helvetica, sans-serif',
-  marginTop: props.$isMobile ? '90px' : null,
-}));
+  marginTop: props.$isMobile ? '90px' : null
+}))
 
 class MainPage extends React.Component {
-  render() {
-    const { courseName, isMobile } = this.props;
+  render () {
+    const { courseName, isMobile } = this.props
     return (
       <MainContainer $isMobile={isMobile}>
         {courseName === null ? <EmptyPage /> : <CourseInfoPage />}
       </MainContainer>
-    );
+    )
   }
 }
 
 const mapStateToProps = state => ({
   courseName: state.selectedClass,
-  isMobile: state.isMobile,
-});
+  isMobile: state.isMobile
+})
 
 export default connect(
   mapStateToProps,
   null
-)(MainPage);
+)(MainPage)

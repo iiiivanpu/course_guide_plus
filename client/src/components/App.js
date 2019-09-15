@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import MainPage from './pages/main-page';
 import { updateIsMobile, selectAClass } from '../reducers/mainUi';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 import UrlSync from './url-sync';
 import backgroundImage from '../static/background.jpg';
 import backgroundImageMin from '../static/background-min.jpg';
@@ -11,12 +11,13 @@ import { InlineShareButtons } from 'sharethis-reactjs';
 import BackgroundImageOnLoad from 'background-image-on-load';
 import { slide as Menu } from 'react-burger-menu';
 import { Collapse } from 'react-collapse';
+import AboutPage from '../components/pages/about-page';
 
 const BackgroundContainer = styled('div', props => ({
   position: 'absolute',
-  width: '100%',
-  height: '100%',
   left: '0',
+  right: '0',
+  bottom: '0',
   top: '0',
   backgroundImage: `url(${
     props.$backgroundLoaded ? backgroundImage : backgroundImageMin
@@ -30,13 +31,29 @@ const BackgroundContainer = styled('div', props => ({
 const TopbarContainer = styled('div', {
   display: 'flex',
   flexDirection: 'row-reverse',
-  margin: '8px 25px 8px 0',
+  zIndex: '10000',
+  position: 'absolute',
+  left: '0',
+  right: '0',
+  top: '0',
+  height: '40px',
+  fontFamily: 'Arial, Helvetica, sans-serif',
 });
 const TopbarElementContainer = styled('div', {
   color: 'white',
   fontSize: '18px',
-  marginLeft: '50px',
-  marginTop: '2px',
+  // marginLeft: '50px',
+  marginRight: '45px',
+  marginTop: '10px',
+});
+const StyledHr = styled('hr', {
+  position: 'absolute',
+  top: '30px',
+  left: '0',
+  right: '0',
+  color: 'white',
+  backgroundColor: 'white',
+  zIndex: '10000',
 });
 const linkStyle = {
   textDecoration: 'none',
@@ -282,18 +299,10 @@ class App extends Component {
                 ...inlineShareButtonsBaseConfig,
                 networks: ['facebook', 'wechat', 'twitter'],
               }}
-            />{' '}
+            />
           </Collapse>
         </Menu>
       </Header>
-    );
-  };
-
-  About = () => {
-    return (
-      <div>
-        <h2>About</h2>
-      </div>
     );
   };
 
@@ -312,6 +321,31 @@ class App extends Component {
       <React.Fragment>
         <UrlSync />
         <Router>
+          {!isMobile && (
+            <TopbarContainer>
+              {/* Reverse the order because using row-reverse */}
+              <TopbarElementContainer>
+                <Link to="/contact" style={linkStyle}>
+                  <StyledAnchor>Contact</StyledAnchor>
+                </Link>
+              </TopbarElementContainer>
+              <TopbarElementContainer>
+                <Link to="/about" style={linkStyle}>
+                  <StyledAnchor>About</StyledAnchor>
+                </Link>
+              </TopbarElementContainer>
+              <TopbarElementContainer>
+                <Link
+                  to="/"
+                  onClick={() => selectAClass(null)}
+                  style={linkStyle}
+                >
+                  <StyledAnchor>Home</StyledAnchor>
+                </Link>
+              </TopbarElementContainer>
+            </TopbarContainer>
+          )}
+          {!isMobile && <StyledHr />}
           <BackgroundContainer
             $backgroundLoaded={backgroundLoaded}
             $courseSelected={courseSelected}
@@ -325,33 +359,8 @@ class App extends Component {
               }
               onError={err => console.log('error', err)}
             />
-            {!isMobile && (
-              <TopbarContainer>
-                {/* Reverse the order because using row-reverse */}
-                <TopbarElementContainer>
-                  <Link to="/contact" style={linkStyle}>
-                    <StyledAnchor>Contact</StyledAnchor>
-                  </Link>
-                </TopbarElementContainer>
-                <TopbarElementContainer>
-                  <Link to="/about" style={linkStyle}>
-                    <StyledAnchor>About</StyledAnchor>
-                  </Link>
-                </TopbarElementContainer>
-                <TopbarElementContainer>
-                  <Link
-                    to="/"
-                    onClick={() => selectAClass(null)}
-                    style={linkStyle}
-                  >
-                    <StyledAnchor>Home</StyledAnchor>
-                  </Link>
-                </TopbarElementContainer>
-              </TopbarContainer>
-            )}
-            {!isMobile && <hr />}
             <Route exact path="/" component={MainPage} />
-            <Route path="/about" component={this.About} />
+            <Route path="/about" component={AboutPage} />
             <Route path="/contact" component={this.Contact} />
           </BackgroundContainer>
           {isMobile
