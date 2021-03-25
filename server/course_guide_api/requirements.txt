@@ -40,7 +40,7 @@ pyquery==1.4.0
 pyspider==0.3.10
 python-dateutil==2.8.0
 pytz==2019.1
-PyYAML==3.13
+PyYAML==5.4
 requests==2.20.1
 semantic-version==2.5.0
 six==1.11.0
