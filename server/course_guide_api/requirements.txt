@@ -54,4 +54,4 @@ urllib3==1.24.3
 wcwidth==0.1.7
 websocket-client==0.56.0
 Werkzeug==0.15.5
-WsgiDAV==3.0.0
+WsgiDAV==4.1.0
